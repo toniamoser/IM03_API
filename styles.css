@@ -4,9 +4,13 @@ body {
     margin: 0;
     padding: 0;
     height: 100vh;
-    background: url('img/background-gradient.svg');
+    background-image: url('img/background-gradient.svg'); /* Test mit JPG/PNG */
     background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
+
+
 
 .container {
     text-align: center;
