@@ -21,6 +21,8 @@ body {
     margin-bottom: 50px; /* Abstand nach unten */
 }
 
+
+
 .container {
     text-align: center; /* Text zentriert */
     flex-grow: 0.75; /* Nimmt den verbleibenden Platz ein */
