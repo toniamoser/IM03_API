@@ -1,42 +1,61 @@
-/* styles.css */
-
 body {
     margin: 0;
     padding: 0;
     height: 100vh;
-    background: url('img/background-gradient.svg');
-    background-size: cover;
+    background: linear-gradient(to bottom, #0055ff, #001a66); /* Gradient Hintergrund */
+    color: white;
+    font-family: Raleway, sans-serif;
+    display: flex;
+    flex-direction: column; /* Damit die header und die container untereinander sind */
+    align-items: center; /* Zentriert die Inhalte horizontal */
+}
+
+.logo-section {
+    width: 100%; /* Nimmt die volle Breite ein */
+    text-align: center; /* Text zentriert */
+    padding-top: 50px; /* Abstand von oben */
+}
+
+.logo-img {
+    max-width: 200px;
+    margin-bottom: 50px; /* Abstand nach unten */
 }
 
 .container {
-    text-align: center;
-}
-
-.logo {
-    width: 200px;
-    margin-bottom: 20px;
-}
-
-.content {
-    color: white;
+    text-align: center; /* Text zentriert */
+    flex-grow: 0.75; /* Nimmt den verbleibenden Platz ein */
+    display: flex; /* Flexbox für zentrierte Inhalte */
+    flex-direction: column; /* Inhalte untereinander anordnen */
+    justify-content: center; /* Vertikal zentrieren */
+    padding: 0 350px; /* Padding auf beiden Seiten */
 }
 
 h1 {
-    font-size: 2em;
-    margin-bottom: 20px;
+    font-size: 3.3rem;
+    font-weight: 200;
+    line-height: 3.75rem;
+}
+
+.highlight {
+    font-family: Kalnia;
+    font-weight: 600;
+    font-size: 3.3rem;
 }
 
 button {
-    padding: 15px 30px;
-    font-size: 1.2em;
-    background-color: #ff4b5c;
+    border-radius: 80px;
+    background: rgba(0, 0, 0, 0.50);
     color: white;
+    font-size: 1.389rem; /* Schriftgröße */
+    font-family: 'Raleway', sans-serif; /* Schriftart */
+    font-weight: 700; /* Schriftgewicht */
+    padding: 15px 30px;
     border: none;
     cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+    transition: transform 0.3s ease;
+    display: inline-block; /* Text bleibt unverändert */
 }
 
 button:hover {
-    background-color: #ff3b4a;
+    transform: scale(1.03);
 }
