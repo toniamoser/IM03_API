@@ -10,28 +10,7 @@ body {
     align-items: center; /* Zentriert die Inhalte horizontal */
 }
 
-.logo-section {
-    width: 100%; /* Nimmt die volle Breite ein */
-    text-align: center; /* Text zentriert */
-    padding-top: 50px; /* Abstand von oben */
-}
-
-.logo-img {
-    max-width: 200px;
-    margin-bottom: 50px; /* Abstand nach unten */
-}
-
-
-
-.container {
-    text-align: center; /* Text zentriert */
-    flex-grow: 0.75; /* Nimmt den verbleibenden Platz ein */
-    display: flex; /* Flexbox für zentrierte Inhalte */
-    flex-direction: column; /* Inhalte untereinander anordnen */
-    justify-content: center; /* Vertikal zentrieren */
-    padding: 0 350px; /* Padding auf beiden Seiten */
-}
-
+/* FONTS */
 h1 {
     font-size: 3.3rem;
     font-weight: 200;
@@ -44,20 +23,111 @@ h1 {
     font-size: 3.3rem;
 }
 
-button {
+h2 {
+    font-size: 2.222rem;
+    font-weight: 200;
+    line-height: 2.75rem;
+}
+
+.highlighth2 {
+    font-family: Kalnia;
+    font-weight: 600;
+    font-size: 2.222rem;
+}
+
+h3 {
+    font-size: 1.667rem;
+    font-weight: 200;
+    line-height: 2.3rem;
+}
+
+.highlighth3 {
+    font-family: Kalnia;
+    font-weight: 600;
+    font-size: 1.667rem;
+}
+
+p{
+    font-size: 1rem;
+}
+
+/* Struktur */
+.logo-section {
+    width: 100%; /* Nimmt die volle Breite ein */
+    text-align: center; /* Text zentriert */
+    padding-top: 50px; /* Abstand von oben */
+}
+
+.logo-img {
+    max-width: 250px;
+    margin-bottom: 50px; /* Abstand nach unten */
+}
+
+.container {
+    text-align: center; /* Text zentriert */
+    flex-grow: 0.75; /* Nimmt den verbleibenden Platz ein */
+    display: flex; /* Flexbox für zentrierte Inhalte */
+    flex-direction: column; /* Inhalte untereinander anordnen */
+    justify-content: center; /* Vertikal zentrieren */
+    padding: 0 350px; /* Padding auf beiden Seiten */
+}
+
+.container a{
+    text-decoration: none;
+}
+
+.button {
     border-radius: 80px;
     background: rgba(0, 0, 0, 0.50);
     color: white;
     font-size: 1.389rem; /* Schriftgröße */
     font-family: 'Raleway', sans-serif; /* Schriftart */
     font-weight: 700; /* Schriftgewicht */
-    padding: 15px 30px;
+    padding: 15px 50px;
     border: none;
     cursor: pointer;
     transition: transform 0.3s ease;
     display: inline-block; /* Text bleibt unverändert */
+    margin: 20px auto;
 }
 
-button:hover {
+.button:hover {
     transform: scale(1.03);
+}
+
+
+/* FRAGEN*/
+.question {
+    font-size: 2.5rem; /* Schriftgröße für die Frage */
+    margin-bottom: 40px; /* Abstand unter der Frage */
+}
+
+.answer-boxes {
+    display: flex; /* Flexbox für die Antwortboxen */
+    flex-wrap: wrap; /* Damit die Boxen in die nächste Zeile umgebrochen werden */
+    justify-content: center; /* Zentriert die Boxen */
+    margin-bottom: 30px; /* Abstand unter den Boxen */
+    gap: 20px; /* Abstand zwischen den Boxen */
+}
+
+.answer-box {
+    background: rgba(255, 255, 255, 0.1); /* Heller Hintergrund für die Boxen */
+    border: 2.5px solid rgba(255, 255, 255, 0.5); /* Rahmen für die Boxen */
+    border-radius: 10px; /* Abgerundete Ecken */
+    color: white; /* Textfarbe */
+    font-size: 1rem; /* Schriftgröße */
+    flex: 0 1 calc(50% - 20px); /* Setzt die Breite auf 50% - 20px für zwei Boxen nebeneinander */
+    cursor: pointer; /* Zeiger beim Hover */
+    min-height: 100px;
+    display: flex; /* Flexbox für zentrierten Text */
+    align-items: center; /* Zentriert den Text vertikal */
+    justify-content: center;
+}
+
+.answer-box p {
+    font-weight: 700;
+}
+
+.answer-box:hover {
+    background: rgba(255, 255, 255, 0.2); /* Hintergrundfarbe beim Hover */
 }
