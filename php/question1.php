@@ -1,18 +1,14 @@
 <?php
-// Cache-Control Header hinzufügen, um Caching zu verhindern
 header("Cache-Control: no-cache, must-revalidate");
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 ?>
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NRJ Musik Challenge</title>
+    <title>NRJ Musik Challenge - Frage</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Favicon hinzufügen -->
-    <link rel="icon" type="image/png" href="img/favicon.png"> <!-- Pfad zum Favicon -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kalnia:wght@100..700&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -25,9 +21,22 @@ header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
     </header>
     
     <div class="container">
-        <h1>Bist du bereit, dein Wissen über die <span class="highlight">aktuellen Hits der Woche</span> zu testen?</h1>
-        <!-- Link zum ersten Quiz (question1.html) -->
-        <a href="question1.html" class="button">Quiz starten</a>
+        <h2>Welcher dieser Songs wurde in dieser Woche <span class="highlighth2">am meisten gespielt?</span></h2>
+        <div class="answer-boxes">
+            <div class="answer-box">
+                <p>Antwort 1</p>
+            </div>
+            <div class="answer-box">
+                <p>Antwort 2</p>
+            </div>
+            <div class="answer-box">
+                <p>Antwort 3</p>
+            </div>
+            <div class="answer-box">
+                <p>Antwort 4</p>
+            </div>
+        </div>
+        <div class="button">Weiter</div>
     </div>
 
     <script src="script.js"></script>
