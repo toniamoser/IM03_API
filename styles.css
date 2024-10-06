@@ -1,13 +1,15 @@
 body {
     margin: 0;
     padding: 0px 350px;
-    background: linear-gradient(to bottom, #0055ff, #001a66); /* Gradient Hintergrund */
+    background: linear-gradient(to bottom, #0055ff, #001a66) no-repeat;
+    min-height: 100vh; /* Stellt sicher, dass der Body mindestens die Höhe des Bildschirms hat */
     color: white;
     font-family: Raleway, sans-serif;
     display: flex;
     flex-direction: column; /* Damit die header und die container untereinander sind */
     align-items: center; /* Zentriert die Inhalte horizontal */
 }
+
 
 /* FONTS */
 h1 {
