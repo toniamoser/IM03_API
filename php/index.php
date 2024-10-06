@@ -26,10 +26,25 @@ header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
     
     <div class="container">
         <h1>Bist du bereit, dein Wissen über die <span class="highlight">aktuellen Hits der Woche</span> zu testen?</h1>
-        <!-- Link zum ersten Quiz (question1.php) -->
-        <a href="php/question1.php" class="button">Quiz starten</a>
+        <!-- Button, der per JavaScript zu question1.php weiterleitet -->
+        <a id="startQuiz" href="#" class="button">Quiz starten</a>
     </div>
 
-    <script src="script.js"></script>
+    <!-- JavaScript zur Weiterleitung -->
+    <script>
+        // Warte, bis das DOM vollständig geladen ist
+        document.addEventListener('DOMContentLoaded', function() {
+            // Button-Element mit der ID 'startQuiz' holen
+            var startQuizButton = document.getElementById('startQuiz');
+            if (startQuizButton) {
+                // Eventlistener für den Klick auf den Button hinzufügen
+                startQuizButton.addEventListener('click', function(event) {
+                    event.preventDefault();  // Verhindert das Standard-Link-Verhalten
+                    window.location.href = 'question1.php';  // Weiterleitung zu question1.php
+                });
+            }
+        });
+    </script>
+
 </body>
 </html>

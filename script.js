@@ -1,7 +1,9 @@
-// script.js
+document.getElementById('startQuiz').addEventListener('click', function(event) {
+    event.preventDefault();  // Verhindert das Standard-Link-Verhalten
 
-document.getElementById('startQuiz').addEventListener('click', function() {
-    alert('Das Quiz wird gestartet! (Hier kannst du weitere Funktionen hinzufügen)');
-    // Hier kannst du zu einer Quiz-Seite weiterleiten oder den Quiz-Content dynamisch laden
-    // window.location.href = 'quiz.html'; // Beispiel für Weiterleitung
+    // Debugging: Überprüfen, ob das JavaScript ausgeführt wird
+    console.log('Button wurde geklickt');
+    
+    // Leite zu question1.php weiter
+    window.location.href = 'question1.php';
 });
