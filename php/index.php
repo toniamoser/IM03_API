@@ -25,28 +25,13 @@ header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
     </header>
     
     <div class="container">
-        <h1>Bist du bereit, dein Wissen über die <span class="highlight">aktuellen Hits der Woche</span> zu testen?</h1>
-        <!-- Button, der per JavaScript zu php/question1.php weiterleitet -->
-        <a id="startQuiz" href="javascript:void(0);" class="button">Quiz starten</a>
-    </div>
+    <h1>Bist du bereit, dein Wissen über die <span class="highlight">aktuellen Hits der Woche</span> zu testen?</h1>
+    <!-- Button für das Quiz -->
+    <form action="https://projektim03.mariareichmuth.ch/php/question1.php" method="get">
+        <button type="submit" class="button" id="startQuiz">Quiz starten</button>
+    </form>
+</div>
 
-    <!-- JavaScript zur Weiterleitung -->
-    <script>
-        // Warte, bis das DOM vollständig geladen ist
-        document.addEventListener('DOMContentLoaded', function() {
-            // Das Element mit der ID 'startQuiz' holen
-            var startQuizButton = document.getElementById('startQuiz');
-            if (startQuizButton) {
-                // Eventlistener für den Klick auf den Button hinzufügen
-                startQuizButton.addEventListener('click', function(event) {
-                    event.preventDefault();  // Verhindert das Standard-Link-Verhalten
-                    window.location.href = 'php/question1.php';  // Weiterleitung zu php/question1.php
-                });
-            } else {
-                console.log('Das Element mit der ID "startQuiz" wurde nicht gefunden.');
-            }
-        });
-    </script>
 
 </body>
 </html>
