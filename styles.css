@@ -10,6 +10,12 @@ body {
     align-items: center; /* Zentriert die Inhalte horizontal */
 }
 
+@media (max-width: 1200px) {
+    body {
+        padding: 0px 200px; /* Padding auf 200px ändern */
+    }
+}
+
 /* FONTS */
 h1 {
     font-size: 3.3rem;

@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
             correct: 2 // Index der richtigen Antwort (0-basiert)
         },
         {
-            question: "Wie oft kommt in allen gespielten Songs der letzten Woche das Wort 'Love' vor?",
+            question: "Wie oft kommt in allen gespielten Songs der letzten Woche das Wort «Love» vor?",
             answers: ["10 mal", "20 mal", "30 mal", "40 mal"],
             correct: 1
         },
