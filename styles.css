@@ -185,7 +185,6 @@ p {
 
 .logo-img {
     max-width: 250px;
-    margin-bottom: 50px; /* Abstand nach unten */
 }
 
 @media (max-width: 1200px) {
@@ -201,8 +200,12 @@ p {
 }
 
 .container {
-    text-align: center; /* Text zentriert */
-    justify-content: center; /* Vertikal zentrieren */
+    height: calc(100vh - 110.5px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .container a {
