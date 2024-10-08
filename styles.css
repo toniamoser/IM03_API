@@ -10,7 +10,6 @@ body {
     align-items: center; /* Zentriert die Inhalte horizontal */
 }
 
-
 /* FONTS */
 h1 {
     font-size: 3.3rem;
@@ -40,7 +39,7 @@ h3 {
     font-size: 1.667rem;
     font-weight: 200;
     line-height: 2rem;
-    color:black
+    color: black;
 }
 
 .highlighth3 {
@@ -49,7 +48,7 @@ h3 {
     font-size: 1.667rem;
 }
 
-p{
+p {
     font-size: 1rem;
 }
 
@@ -70,10 +69,11 @@ p{
     justify-content: center; /* Vertikal zentrieren */
 }
 
-.container a{
+.container a {
     text-decoration: none;
 }
 
+/* BUTTONS */
 .button {
     border-radius: 80px;
     background: rgba(0, 0, 0, 0.50);
@@ -93,8 +93,13 @@ p{
     transform: scale(1.03);
 }
 
+.button-container {
+    display: flex;
+    justify-content: space-between; /* Größerer Abstand zwischen den Buttons */
+    margin-top: 20px; /* Zusätzlicher Abstand über den Buttons */
+}
 
-/* FRAGEN*/
+/* FRAGEN */
 .question {
     font-size: 2.5rem; /* Schriftgröße für die Frage */
     margin-bottom: 40px; /* Abstand unter der Frage */
@@ -118,6 +123,7 @@ p{
     display: flex; /* Flexbox für zentrierten Text */
     align-items: center; /* Zentriert den Text vertikal */
     justify-content: center;
+    transition: background-color 0.3s;
 }
 
 .answer-box p {
@@ -125,10 +131,16 @@ p{
 }
 
 .answer-box:hover {
-    background: rgba(255, 255, 255, 0.2); /* Hintergrundfarbe beim Hover */
+    background-color: rgba(255, 255, 255, 0.2); /* Hintergrundfarbe beim Hover */
 }
 
-/* auflösung */
+/* Styling für die aktivierte (eingeloggte) Antwort */
+.answer-box.active {
+    background-color: white;
+    color: black;
+}
+
+/* Ergebnis und Quiz wiederholen */
 .black {
     color: black;
 }
@@ -141,7 +153,6 @@ p{
     text-align: center;
     position: absolute; /* Absolute Positionierung */
     bottom: -12px; /* Abstand von unten */
-    /* Optionale Effekte */
 }
 
 .statistic {
@@ -163,7 +174,7 @@ p{
     align-items: center; /* Bild und Wiedergabe bleiben zentriert */
 }
 
-.song p{
+.song p {
     padding: 0;
     margin: 0;
 }

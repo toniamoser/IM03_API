@@ -1,9 +1,3 @@
-<?php
-// Cache-Control Header hinzufügen, um Caching zu verhindern
-header("Cache-Control: no-cache, must-revalidate");
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-?>
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -12,7 +6,7 @@ header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
     <title>NRJ Musik Challenge</title>
     <link rel="stylesheet" href="styles.css">
     <!-- Favicon hinzufügen -->
-    <link rel="icon" type="image/png" href="img/favicon.png"> <!-- Pfad zum Favicon -->
+    <link rel="icon" type="image/png" href="img/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kalnia:wght@100..700&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -24,14 +18,15 @@ header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
         </div>
     </header>
     
-    <div class="container">
-    <h1>Bist du bereit, dein Wissen über die <span class="highlight">aktuellen Hits der Woche</span> zu testen?</h1>
-    <!-- Button für das Quiz -->
-    <form action="https://projektim03.mariareichmuth.ch/php/question1.php" method="get">
-        <button type="submit" class="button" id="startQuiz">Quiz starten</button>
-    </form>
-</div>
+    <div class="container" id="content">
+        <!-- Startseite mit dem Quiz-Button -->
+        <h1>Bist du bereit, dein Wissen über die <span class="highlight">aktuellen Hits der Woche</span> zu testen?</h1>
+        <div>
+            <button type="button" class="button" id="startQuiz">Quiz starten</button>
+        </div>
+    </div>
 
-
+    <!-- Binde die externe script.js-Datei ein -->
+    <script src="script.js"></script>
 </body>
 </html>
