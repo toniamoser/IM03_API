@@ -16,6 +16,18 @@ body {
     }
 }
 
+@media (max-width: 768px) {
+    body {
+        padding: 0px 50px; /* Padding auf 50px ändern */
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 0px 20px; /* Padding auf 20px ändern */
+    }
+}
+
 /* FONTS */
 h1 {
     font-size: 3.3rem;
@@ -58,6 +70,106 @@ p {
     font-size: 1rem;
 }
 
+@media (max-width: 900px) {
+    h1 {
+        font-size: 2.5rem;
+        line-height: 3rem;
+    }
+
+    .highlight {
+        font-size: 2.5rem;
+    }
+
+    h2 {
+        font-size: 1.667rem;
+        line-height: 2rem;
+    }
+
+    .highlighth2 {
+        font-size: 1.667rem;
+    }
+
+    h3 {
+        font-size: 1.389rem;
+        line-height: 1.667rem;
+    }
+
+    .highlighth3 {
+        font-size: 1.389rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+        line-height: 2.2rem;
+
+    }
+
+    .highlight {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.389rem;
+        line-height: 1.5rem;
+    }
+
+    .highlighth2 {
+        font-size: 1.389rem;
+    }
+
+    h3 {
+        font-size: 1.111rem;
+        line-height: 1.3rem;
+    }
+
+    .highlighth3 {
+        font-size: 1.111rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.667rem;
+        line-height: 1.8rem;
+    }
+
+    .highlight {
+        font-size: 1.667rem;
+    }
+
+    h2 {
+        font-size: 1.111rem;
+        line-height: 1.2rem;
+    }
+
+    .highlighth2 {
+        font-size: 1.111rem;
+    }
+
+    h3 {
+        font-size: 1rem;
+        line-height: 1.1rem;
+    }
+
+    .highlighth3 {
+        font-size: 1rem;
+    }
+
+    p {
+        font-size: 0.889rem;
+    }
+}
+
 /* Struktur */
 .logo-section {
     width: 100%; /* Nimmt die volle Breite ein */
@@ -65,14 +177,34 @@ p {
     padding-top: 50px; /* Abstand von oben */
 }
 
+@media (max-width: 768px) {
+    .logo-section {
+        padding-top: 20px; /* Abstand von oben */
+    }
+}
+
 .logo-img {
     max-width: 250px;
-    margin-bottom: 50px; /* Abstand nach unten */
+}
+
+@media (max-width: 1200px) {
+    .logo-img {
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 890px) {
+    .logo-img {
+        max-width: 150px;
+    }
 }
 
 .container {
-    text-align: center; /* Text zentriert */
-    justify-content: center; /* Vertikal zentrieren */
+    height: calc(100vh - 120.5px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
 }
 
 .container a {
@@ -105,6 +237,22 @@ p {
     margin-top: 20px; /* Zusätzlicher Abstand über den Buttons */
 }
 
+@media (max-width: 768px) {
+    .button {
+        font-size: 1.111rem;
+        padding: 10px 30px;
+        margin: 10px auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .button {
+        font-size: .9rem;
+        padding: 10px 20px;
+        margin: 0px auto;
+    }
+}
+
 /* FRAGEN */
 .question {
     font-size: 2.5rem; /* Schriftgröße für die Frage */
@@ -130,6 +278,22 @@ p {
     align-items: center; /* Zentriert den Text vertikal */
     justify-content: center;
     transition: background-color 0.3s;
+}
+
+.answer-box:focus {
+    color: #0022ee;
+}
+
+@media (max-width: 768px) {
+    .answer-boxes {
+        grid-template-columns: repeat(1, 1fr); /* Eine Box unter der anderen */
+        gap: 10px;
+    }
+
+    .answer-box {
+        flex: 0 1 calc(100% - 20px); /* Volle Breite für eine Box */
+        min-height: 50px;
+    }
 }
 
 .answer-box p {
