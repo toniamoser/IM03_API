@@ -27,6 +27,6 @@
     </div>
 
     <!-- Binde die externe script.js-Datei ein -->
-    <script src="script.js"></script>
+    <script src="script.js" type="module"></script>
 </body>
 </html>

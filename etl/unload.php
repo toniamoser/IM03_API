@@ -9,12 +9,7 @@ try {
     $pdo = new PDO($dsn, $username, $password, $options);
 
     // SQL-Abfrage, um alle relevanten Informationen zu jedem Song zu holen, sortiert nach playFrom
-    $stmt = $pdo->prepare("
-        SELECT playFrom, imageUrl, audioUrl, title, artist, COUNT(*) AS play_count
-        FROM MusicPlayouts
-        GROUP BY title, artist, playFrom, imageUrl, audioUrl
-        ORDER BY playFrom DESC
-    ");
+    $stmt = $pdo->prepare("SELECT * FROM MusicPlayouts");
 
     // Führt die Abfrage aus
     $stmt->execute();
