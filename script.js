@@ -1,15 +1,16 @@
 document.addEventListener('DOMContentLoaded', async function () {
     console.log('DOM vollständig geladen');
 
-    // URL zu deinem API-Endpunkt (unload.php)
     const url = 'https://projektim03.mariareichmuth.ch/etl/unload.php';
 
-    // Funktion zum Abrufen der Fragen basierend auf der Datenbank
+    let questionBoxHeights = [];  // Um die Höhe der Antwortboxen zu speichern
+    let questionBoxWidths = [];   // Um die Breite der Antwortboxen zu speichern
+
     async function loadQuestions() {
         try {
             const response = await fetch(url);
             const data = await response.json();
-            console.log('Daten von der API:', data); // Zeige die abgerufenen Daten in der Konsole an
+            console.log('Daten von der API:', data);
             return data;
         } catch (e) {
             console.error('Fehler beim Abrufen der Daten:', e);
@@ -17,24 +18,19 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
-    const data = await loadQuestions(); // Holt die Daten aus der Datenbank
+    const data = await loadQuestions();
 
     if (!data || data.length === 0) {
         console.error('Fehler beim Abrufen der Daten.');
         return;
     }
 
-    // Berechne das Datum vor 7 Tagen
     const now = new Date();
     const sevenDaysAgo = new Date(now);
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-    console.log(`Aktuelles Datum: ${now}`);
-    console.log(`Datum vor 7 Tagen: ${sevenDaysAgo}`);
-
-    // Überprüfe das Format der Timestamps (playFrom) und filtere die Songs der letzten 7 Tage
     let recentSongs = data.filter(song => {
-        const songDate = new Date(song.playFrom); // Verwende playFrom statt timestamp
+        const songDate = new Date(song.playFrom);
         return songDate >= sevenDaysAgo;
     });
 
@@ -43,24 +39,19 @@ document.addEventListener('DOMContentLoaded', async function () {
         return;
     }
 
-    console.log('Songs der letzten 7 Tage:', recentSongs);
-
-    // Berechne die Häufigkeit der abgespielten Songs
     let topSongsFrequency = recentSongs.reduce((acc, next) => {
         const key = `${next.artist}-${next.title}`;
         acc[key] = (acc[key] || 0) + 1;
         return acc;
     }, {});
 
-    // Berechne die Häufigkeit der abgespielten Künstler
     let topArtistsFrequency = recentSongs.reduce((acc, next) => {
-        if (next.artist) {  // Überprüfe, ob der Künstler vorhanden ist
+        if (next.artist) {
             acc[next.artist] = (acc[next.artist] || 0) + 1;
         }
         return acc;
     }, {});
 
-    // Top 4 Songs, absteigend sortiert nach PlayCount, und ohne "News Bern"
     let topSongs = Object.entries(topSongsFrequency)
         .map(([key, count]) => {
             let [artist, title] = key.split("-");
@@ -70,41 +61,23 @@ document.addEventListener('DOMContentLoaded', async function () {
                 playCount: count
             };
         })
-        .filter(song => song.title !== "News Bern" && song.artist && song.title) // "News Bern" entfernen, und nur gültige Songs und Künstler
-        .sort((a, b) => b.playCount - a.playCount) // Sortiere absteigend nach playCount
-        .slice(0, 4); // Top 4 Songs auswählen
+        .filter(song => song.title !== "News Bern" && song.artist && song.title)
+        .sort((a, b) => b.playCount - a.playCount)
+        .slice(0, 4);
 
-    if (topSongs.length === 0) {
-        console.error('Keine Songs in den letzten 7 Tagen gefunden.');
-        return;
-    }
-
-    // Top 4 Künstler, absteigend sortiert nach PlayCount
     let topArtists = Object.entries(topArtistsFrequency)
-        .sort((a, b) => b[1] - a[1]) // Sortiere absteigend nach playCount
-        .map(([artist, count]) => artist) // Nur die Künstlernamen
-        .filter(artist => artist) // Entferne null oder undefined Werte
-        .slice(0, 4); // Top 4 Künstler auswählen
+        .sort((a, b) => b[1] - a[1])
+        .map(([artist, count]) => artist)
+        .slice(0, 4);
 
-    if (topArtists.length === 0) {
-        console.error('Keine Künstler in den letzten 7 Tagen gefunden.');
-        return;
-    }
-
-    console.log('Top Songs:', topSongs);
-    console.log('Top Artists:', topArtists);
-
-    // Zähle die Anzahl der Songs mit "Love", "Dance" und "My" im Titel
     let loveCount = recentSongs.filter(song => song.title.includes('Love')).length;
     let danceCount = recentSongs.filter(song => song.title.includes('Dance')).length;
     let myCount = recentSongs.filter(song => song.title.includes('My')).length;
 
-    // Funktion zum Generieren von zufälligen Zahlen zwischen min und max
     function getRandomNumber(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    // Generiere 3 zufällige falsche Antworten (zwischen 500 und 1000)
     let wrongAnswersForLoveCount = [
         getRandomNumber(500, 1000),
         getRandomNumber(500, 1000),
@@ -123,21 +96,19 @@ document.addEventListener('DOMContentLoaded', async function () {
         getRandomNumber(500, 1000)
     ];
 
-    // Funktion zum Zufällig Mischen der Antworten, aber behalte die richtige Antwort korrekt
     function shuffleArrayWithCorrectAnswer(answers, correctAnswer) {
-        const shuffledAnswers = [...answers].sort(() => Math.random() - 0.5); // Erstelle eine Kopie und mische die Antworten
+        const shuffledAnswers = [...answers].sort(() => Math.random() - 0.5);
         return {
             answers: shuffledAnswers,
             correct: correctAnswer
         };
     }
 
-    // Erstelle die Quizfragen, füge den Songtitel des meistgespielten Songs in die Frage ein
-    const mostPlayedSongTitle = topSongs[0].title; // Meistgespielter Songtitel
+    const mostPlayedSongTitle = topSongs[0].title;
 
     const questions = [
         {
-            question: `Wie oft wurde der meistgespielte Song insgesamt abgespielt?`,  // Songtitel eingefügt
+            question: `Wie oft wurde der meistgespielte Song insgesamt abgespielt?`,
             ...shuffleArrayWithCorrectAnswer(topSongs.map(song => song.playCount), topSongs[0].playCount)
         },
         {
@@ -154,27 +125,23 @@ document.addEventListener('DOMContentLoaded', async function () {
         },
         {
             question: "Welcher Künstler wurde in dieser Woche insgesamt am meisten im Radio gespielt?",
-            ...shuffleArrayWithCorrectAnswer(topArtists, topArtists[0])  // Der meistgespielte Künstler
+            ...shuffleArrayWithCorrectAnswer(topArtists, topArtists[0])
         },
         {
             question: "Welcher dieser Songs wurde in dieser Woche am meisten gespielt?",
-            ...shuffleArrayWithCorrectAnswer(topSongs.map(song => song.title), topSongs[0].title)  // Der meistgespielte Song
+            ...shuffleArrayWithCorrectAnswer(topSongs.map(song => song.title), topSongs[0].title)
         }
     ];
-
-    console.log(questions);
 
     let currentQuestionIndex = 0;
     let selectedAnswerIndex = null;
     let shuffledQuestions = [];
 
-    // Funktion zum Zufällig Mischen der Fragen
     function shuffleQuestions() {
         shuffledQuestions = [...questions];
         shuffledQuestions.sort(() => Math.random() - 0.5);
     }
 
-    // Funktion zum Anzeigen der aktuellen Frage und Antworten
     function showQuestion() {
         selectedAnswerIndex = null;
         const currentQuestion = shuffledQuestions[currentQuestionIndex];
@@ -193,7 +160,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         contentDiv.innerHTML = html;
 
-        // Antwortauswahl
+        // Antwortboxen auswählen und klicken aktivieren
         document.querySelectorAll('.answer-box').forEach(box => {
             box.addEventListener('click', function () {
                 document.querySelectorAll('.answer-box').forEach(box => {
@@ -209,13 +176,14 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
         });
 
-        // Weiter-Button
         document.getElementById('nextButton').addEventListener('click', function () {
             showAnswer();
         });
+
+        // Speichere die Höhe und Breite der Antwortboxen
+        saveAnswerBoxDimensions();
     }
 
-    // Funktion zum Anzeigen der Antwortseite ("Richtig" oder "Falsch")
     function showAnswer() {
         const currentQuestion = shuffledQuestions[currentQuestionIndex];
         const contentDiv = document.getElementById('content');
@@ -251,6 +219,9 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         contentDiv.innerHTML = html;
 
+        // Höhe und Breite der Boxen auf gespeicherte Maße setzen
+        applySavedDimensionsToAnswerBoxes();
+
         document.getElementById('nextButton').addEventListener('click', function () {
             if (currentQuestionIndex < shuffledQuestions.length - 1) {
                 currentQuestionIndex++;
@@ -261,7 +232,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
-    // Funktion zum Anzeigen des Ergebnisses
     function showResult() {
         const contentDiv = document.getElementById('content');
         contentDiv.innerHTML = `
@@ -277,7 +247,28 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
-    // Quiz starten
+    // Speichert die Höhe und Breite der aktuellen Antwortboxen
+    function saveAnswerBoxDimensions() {
+        questionBoxHeights = [];
+        questionBoxWidths = [];
+        const answerBoxes = document.querySelectorAll('.answer-box');
+        answerBoxes.forEach(box => {
+            questionBoxHeights.push(box.offsetHeight); // Speichere jede Boxhöhe
+            questionBoxWidths.push(box.offsetWidth);   // Speichere jede Boxbreite
+        });
+    }
+
+    // Wendet die gespeicherte Höhe und Breite auf die Antwortboxen in der Richtig/Falsch-Seite an
+    function applySavedDimensionsToAnswerBoxes() {
+        const answerBoxes = document.querySelectorAll('.answer-box');
+        answerBoxes.forEach((box, index) => {
+            if (questionBoxHeights[index] && questionBoxWidths[index]) {
+                box.style.height = `${questionBoxHeights[index]}px`; // Setze die Höhe
+                box.style.width = `${questionBoxWidths[index]}px`;   // Setze die Breite
+            }
+        });
+    }
+
     document.getElementById('startQuiz').addEventListener('click', function () {
         shuffleQuestions();
         showQuestion();

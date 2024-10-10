@@ -2,29 +2,29 @@ body {
     margin: 0;
     padding: 0px 350px;
     background: linear-gradient(to bottom, #0055ff, #001a66) no-repeat;
-    min-height: 100vh; /* Stellt sicher, dass der Body mindestens die Höhe des Bildschirms hat */
+    min-height: 100vh;
     color: white;
     font-family: Raleway, sans-serif;
     display: flex;
-    flex-direction: column; /* Damit die header und die container untereinander sind */
-    align-items: center; /* Zentriert die Inhalte horizontal */
+    flex-direction: column;
+    align-items: center;
 }
 
 @media (max-width: 1200px) {
     body {
-        padding: 0px 200px; /* Padding auf 200px ändern */
+        padding: 0px 200px;
     }
 }
 
 @media (max-width: 768px) {
     body {
-        padding: 0px 50px; /* Padding auf 50px ändern */
+        padding: 0px 50px;
     }
 }
 
 @media (max-width: 480px) {
     body {
-        padding: 0px 20px; /* Padding auf 20px ändern */
+        padding: 0px 20px;
     }
 }
 
@@ -107,7 +107,6 @@ p {
     h1 {
         font-size: 2rem;
         line-height: 2.2rem;
-
     }
 
     .highlight {
@@ -172,14 +171,14 @@ p {
 
 /* Struktur */
 .logo-section {
-    width: 100%; /* Nimmt die volle Breite ein */
-    text-align: center; /* Text zentriert */
-    padding-top: 50px; /* Abstand von oben */
+    width: 100%;
+    text-align: center;
+    padding-top: 50px;
 }
 
 @media (max-width: 768px) {
     .logo-section {
-        padding-top: 20px; /* Abstand von oben */
+        padding-top: 20px;
     }
 }
 
@@ -216,14 +215,14 @@ p {
     border-radius: 80px;
     background: rgba(0, 0, 0, 0.50);
     color: white;
-    font-size: 1.389rem; /* Schriftgröße */
-    font-family: 'Raleway', sans-serif; /* Schriftart */
-    font-weight: 700; /* Schriftgewicht */
+    font-size: 1.389rem;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 700;
     padding: 15px 50px;
     border: none;
     cursor: pointer;
     transition: transform 0.3s ease;
-    display: inline-block; /* Text bleibt unverändert */
+    display: inline-block;
     margin: 20px auto;
 }
 
@@ -233,8 +232,8 @@ p {
 
 .button-container {
     display: flex;
-    justify-content: space-between; /* Größerer Abstand zwischen den Buttons */
-    margin-top: 20px; /* Zusätzlicher Abstand über den Buttons */
+    justify-content: space-between;
+    margin-top: 20px;
 }
 
 @media (max-width: 768px) {
@@ -255,43 +254,44 @@ p {
 
 /* FRAGEN */
 .question {
-    font-size: 2.5rem; /* Schriftgröße für die Frage */
-    margin-bottom: 40px; /* Abstand unter der Frage */
+    font-size: 2.5rem;
+    margin-bottom: 40px;
 }
 
 .answer-boxes {
     display: grid;
-    grid-template-columns: repeat(2, 2fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
 }
 
 .answer-box {
-    background: rgba(255, 255, 255, 0.1); /* Heller Hintergrund für die Boxen */
-    border: 2.5px solid rgba(255, 255, 255, 0.5); /* Rahmen für die Boxen */
-    border-radius: 10px; /* Abgerundete Ecken */
-    color: white; /* Textfarbe */
-    font-size: 1rem; /* Schriftgröße */
-    flex: 0 1 calc(50% - 20px); /* Setzt die Breite auf 50% - 20px für zwei Boxen nebeneinander */
-    cursor: pointer; /* Zeiger beim Hover */
-    min-height: 100px;
-    display: flex; /* Flexbox für zentrierten Text */
-    align-items: center; /* Zentriert den Text vertikal */
+    background: rgba(255, 255, 255, 0.1);
+    border: 2.5px solid rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    color: white;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    transition: background-color 0.3s;
+    min-height: 100px;
+    cursor: pointer;
+    word-wrap: break-word;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
-.answer-box:focus {
-    color: #0022ee;
+.answer-box:hover {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
+/* Responsive Design für kleinere Bildschirme */
 @media (max-width: 768px) {
     .answer-boxes {
-        grid-template-columns: repeat(1, 1fr); /* Eine Box unter der anderen */
+        grid-template-columns: repeat(1, 1fr);
         gap: 10px;
     }
 
     .answer-box {
-        flex: 0 1 calc(100% - 20px); /* Volle Breite für eine Box */
         min-height: 50px;
     }
 }
@@ -300,11 +300,7 @@ p {
     font-weight: 700;
 }
 
-.answer-box:hover {
-    background-color: rgba(255, 255, 255, 0.2); /* Hintergrundfarbe beim Hover */
-}
-
-/* Styling für die aktivierte (eingeloggte) Antwort */
+/* Styling für die aktivierte (ausgewählte) Antwort */
 .answer-box.active {
     background-color: white;
     color: black;
@@ -316,13 +312,13 @@ p {
 }
 
 .wiedergabe {
-    background-color: rgba(0, 34, 238, 0.8); /* Hellerer Hintergrund für bessere Sichtbarkeit */
+    background-color: rgba(0, 34, 238, 0.8);
     color: white;
     padding: 5px 8px;
     border-radius: 35px;
     text-align: center;
-    position: absolute; /* Absolute Positionierung */
-    bottom: -12px; /* Abstand von unten */
+    position: absolute;
+    bottom: -12px;
 }
 
 .statistic {
@@ -338,10 +334,10 @@ p {
 }
 
 .song {
-    position: relative; /* Position der Elternklasse auf relativ setzen */
+    position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Bild und Wiedergabe bleiben zentriert */
+    align-items: center;
 }
 
 .song p {
@@ -350,8 +346,8 @@ p {
 }
 
 .song-info {
-    text-align: left; /* Links ausgerichtet für Songtitel und Interpret */
-    align-self: flex-start; /* Damit der Text linksbündig bleibt */
+    text-align: left;
+    align-self: flex-start;
     margin-bottom: 10px;
 }
 
