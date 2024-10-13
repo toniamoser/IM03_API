@@ -55,15 +55,19 @@ document.addEventListener('DOMContentLoaded', async function () {
     let topSongs = Object.entries(topSongsFrequency)
         .map(([key, count]) => {
             let [artist, title] = key.split("-");
+            let song = recentSongs.find(song => song.title === title && song.artist === artist); // Find song details
             return {
                 artist: artist,
                 title: title,
-                playCount: count
+                playCount: count,
+                imageUrl: song ? song.imageUrl : ''  // Safeguard for missing imageUrl
             };
         })
         .filter(song => song.title !== "News Bern" && song.artist && song.title)
         .sort((a, b) => b.playCount - a.playCount)
         .slice(0, 4);
+
+    console.log("Top songs array:", topSongs); // Log topSongs array to verify data
 
     let topArtists = Object.entries(topArtistsFrequency)
         .sort((a, b) => b[1] - a[1])
@@ -160,7 +164,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         contentDiv.innerHTML = html;
 
-        // Antwortboxen auswählen und klicken aktivieren
         document.querySelectorAll('.answer-box').forEach(box => {
             box.addEventListener('click', function () {
                 document.querySelectorAll('.answer-box').forEach(box => {
@@ -180,7 +183,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             showAnswer();
         });
 
-        // Speichere die Höhe und Breite der Antwortboxen
         saveAnswerBoxDimensions();
     }
 
@@ -190,8 +192,10 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         const isCorrect = currentQuestion.answers[selectedAnswerIndex] === currentQuestion.correct;
 
+        // Consistent answer feedback message ("Richtig" / "Falsch") with same layout as other answer pages
         let html = `<h2>${isCorrect ? 'Richtig!' : 'Das war leider falsch.'}</h2><div class="answer-boxes">`;
 
+        // Display the answer options just like other answer pages
         currentQuestion.answers.forEach((answer, index) => {
             let backgroundColor = '';
             let textColor = '';
@@ -217,12 +221,37 @@ document.addEventListener('DOMContentLoaded', async function () {
         html += `</div><div class="button-container" style="display: flex; justify-content: space-between; margin-top: 20px;">`;
         html += `<button class="button" id="nextButton">Weiter</button></div>`;
 
+        // Check if this is the "most-played song" question to add the white bar with the four song boxes
+        if (currentQuestion.question.includes('am meisten gespielt')) {
+            console.log('Most played song question detected! Adding top songs to the page.');
+
+            // Apply white background dynamically when showing this section
+            document.body.classList.add('white-bg');  // Add the white background
+
+            // Extend the page by adding the white bar and the four song boxes below the "Weiter" button
+            html += `<div id="top-songs-container" class="top-songs" style="margin-top: 20px;">`;
+
+            topSongs.forEach(song => {
+                console.log('Adding song:', song); // Logging each song being added
+                html += `
+                    <div class="song-box">
+                        <h3>${song.title}</h3>
+                        <p>${song.artist}</p>
+                        <img src="${song.imageUrl}" alt="Album Cover">
+                        <div class="play-count">${song.playCount}x</div>
+                    </div>
+                `;
+            });
+
+            html += `</div>`;
+        }
+
         contentDiv.innerHTML = html;
 
-        // Höhe und Breite der Boxen auf gespeicherte Maße setzen
-        applySavedDimensionsToAnswerBoxes();
-
         document.getElementById('nextButton').addEventListener('click', function () {
+            // Immediately remove the white background when the user clicks "Weiter"
+            document.body.classList.remove('white-bg');
+
             if (currentQuestionIndex < shuffledQuestions.length - 1) {
                 currentQuestionIndex++;
                 showQuestion();
@@ -230,6 +259,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                 showResult();
             }
         });
+
+        applySavedDimensionsToAnswerBoxes();
     }
 
     function showResult() {
@@ -247,24 +278,22 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
-    // Speichert die Höhe und Breite der aktuellen Antwortboxen
     function saveAnswerBoxDimensions() {
         questionBoxHeights = [];
         questionBoxWidths = [];
         const answerBoxes = document.querySelectorAll('.answer-box');
         answerBoxes.forEach(box => {
-            questionBoxHeights.push(box.offsetHeight); // Speichere jede Boxhöhe
-            questionBoxWidths.push(box.offsetWidth);   // Speichere jede Boxbreite
+            questionBoxHeights.push(box.offsetHeight); 
+            questionBoxWidths.push(box.offsetWidth);   
         });
     }
 
-    // Wendet die gespeicherte Höhe und Breite auf die Antwortboxen in der Richtig/Falsch-Seite an
     function applySavedDimensionsToAnswerBoxes() {
         const answerBoxes = document.querySelectorAll('.answer-box');
         answerBoxes.forEach((box, index) => {
             if (questionBoxHeights[index] && questionBoxWidths[index]) {
-                box.style.height = `${questionBoxHeights[index]}px`; // Setze die Höhe
-                box.style.width = `${questionBoxWidths[index]}px`;   // Setze die Breite
+                box.style.height = `${questionBoxHeights[index]}px`; 
+                box.style.width = `${questionBoxWidths[index]}px`;   
             }
         });
     }
