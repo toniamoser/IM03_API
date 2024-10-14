@@ -1,11 +1,13 @@
-document.addEventListener('DOMContentLoaded', async function () {
+document.addEventListener('DOMContentLoaded', function () {
     console.log('DOM vollständig geladen');
 
     const url = 'https://projektim03.mariareichmuth.ch/etl/unload.php';
 
     let questionBoxHeights = [];  // Um die Höhe der Antwortboxen zu speichern
     let questionBoxWidths = [];   // Um die Breite der Antwortboxen zu speichern
+    let data = null;  // Um die Quizdaten zu speichern
 
+    // Die Funktion lädt die Fragen von der API
     async function loadQuestions() {
         try {
             const response = await fetch(url);
@@ -18,137 +20,151 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
-    const data = await loadQuestions();
+    // Starte das Quiz und zeige die erste Frage
+    async function startQuiz() {
+        if (!data) {
+            console.log('Lade Daten...');
+            data = await loadQuestions();  // Daten nur einmal laden
 
-    if (!data || data.length === 0) {
-        console.error('Fehler beim Abrufen der Daten.');
-        return;
-    }
-
-    const now = new Date();
-    const sevenDaysAgo = new Date(now);
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
-    let recentSongs = data.filter(song => {
-        const songDate = new Date(song.playFrom);
-        return songDate >= sevenDaysAgo;
-    });
-
-    if (recentSongs.length === 0) {
-        console.error('Keine Songs in den letzten 7 Tagen gefunden.');
-        return;
-    }
-
-    let topSongsFrequency = recentSongs.reduce((acc, next) => {
-        const key = `${next.artist}-${next.title}`;
-        acc[key] = (acc[key] || 0) + 1;
-        return acc;
-    }, {});
-
-    let topArtistsFrequency = recentSongs.reduce((acc, next) => {
-        if (next.artist) {
-            acc[next.artist] = (acc[next.artist] || 0) + 1;
+            if (!data || data.length === 0) {
+                console.error('Fehler beim Abrufen der Daten.');
+                return;
+            }
         }
-        return acc;
-    }, {});
 
-    let topSongs = Object.entries(topSongsFrequency)
-        .map(([key, count]) => {
-            let [artist, title] = key.split("-");
-            let song = recentSongs.find(song => song.title === title && song.artist === artist); // Find song details
+        initializeQuiz(data);  // Initialisiere das Quiz
+        shuffleQuestions();
+        showQuestion();
+    }
+
+    // Initialisiere das Quiz und bereite die Fragen vor
+    function initializeQuiz(data) {
+        const now = new Date();
+        const sevenDaysAgo = new Date(now);
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+        let recentSongs = data.filter(song => {
+            const songDate = new Date(song.playFrom);
+            return songDate >= sevenDaysAgo;
+        });
+
+        if (recentSongs.length === 0) {
+            console.error('Keine Songs in den letzten 7 Tagen gefunden.');
+            return;
+        }
+
+        let topSongsFrequency = recentSongs.reduce((acc, next) => {
+            const key = `${next.artist}-${next.title}`;
+            acc[key] = (acc[key] || 0) + 1;
+            return acc;
+        }, {});
+
+        let topArtistsFrequency = recentSongs.reduce((acc, next) => {
+            if (next.artist) {
+                acc[next.artist] = (acc[next.artist] || 0) + 1;
+            }
+            return acc;
+        }, {});
+
+        let topSongs = Object.entries(topSongsFrequency)
+            .map(([key, count]) => {
+                let [artist, title] = key.split("-");
+                let song = recentSongs.find(song => song.title === title && song.artist === artist); // Find song details
+                return {
+                    artist: artist,
+                    title: title,
+                    playCount: count,
+                    imageUrl: song ? song.imageUrl : ''  // Safeguard for missing imageUrl
+                };
+            })
+            .filter(song => song.title !== "News Bern" && song.artist && song.title)
+            .sort((a, b) => b.playCount - a.playCount)
+            .slice(0, 4);
+
+        let topArtists = Object.entries(topArtistsFrequency)
+            .sort((a, b) => b[1] - a[1])
+            .map(([artist, count]) => artist)
+            .slice(0, 4);
+
+        let loveCount = recentSongs.filter(song => song.title.includes('Love')).length;
+        let danceCount = recentSongs.filter(song => song.title.includes('Dance')).length;
+        let myCount = recentSongs.filter(song => song.title.includes('My')).length;
+
+        function getRandomNumber(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        let wrongAnswersForLoveCount = [
+            getRandomNumber(500, 1000),
+            getRandomNumber(500, 1000),
+            getRandomNumber(500, 1000)
+        ];
+
+        let wrongAnswersForDanceCount = [
+            getRandomNumber(500, 1000),
+            getRandomNumber(500, 1000),
+            getRandomNumber(500, 1000)
+        ];
+
+        let wrongAnswersForMyCount = [
+            getRandomNumber(500, 1000),
+            getRandomNumber(500, 1000),
+            getRandomNumber(500, 1000)
+        ];
+
+        function shuffleArrayWithCorrectAnswer(answers, correctAnswer) {
+            const shuffledAnswers = [...answers].sort(() => Math.random() - 0.5);
             return {
-                artist: artist,
-                title: title,
-                playCount: count,
-                imageUrl: song ? song.imageUrl : ''  // Safeguard for missing imageUrl
+                answers: shuffledAnswers,
+                correct: correctAnswer
             };
-        })
-        .filter(song => song.title !== "News Bern" && song.artist && song.title)
-        .sort((a, b) => b.playCount - a.playCount)
-        .slice(0, 4);
-
-    console.log("Top songs array:", topSongs); // Log topSongs array to verify data
-
-    let topArtists = Object.entries(topArtistsFrequency)
-        .sort((a, b) => b[1] - a[1])
-        .map(([artist, count]) => artist)
-        .slice(0, 4);
-
-    let loveCount = recentSongs.filter(song => song.title.includes('Love')).length;
-    let danceCount = recentSongs.filter(song => song.title.includes('Dance')).length;
-    let myCount = recentSongs.filter(song => song.title.includes('My')).length;
-
-    function getRandomNumber(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    let wrongAnswersForLoveCount = [
-        getRandomNumber(500, 1000),
-        getRandomNumber(500, 1000),
-        getRandomNumber(500, 1000)
-    ];
-
-    let wrongAnswersForDanceCount = [
-        getRandomNumber(500, 1000),
-        getRandomNumber(500, 1000),
-        getRandomNumber(500, 1000)
-    ];
-
-    let wrongAnswersForMyCount = [
-        getRandomNumber(500, 1000),
-        getRandomNumber(500, 1000),
-        getRandomNumber(500, 1000)
-    ];
-
-    function shuffleArrayWithCorrectAnswer(answers, correctAnswer) {
-        const shuffledAnswers = [...answers].sort(() => Math.random() - 0.5);
-        return {
-            answers: shuffledAnswers,
-            correct: correctAnswer
-        };
-    }
-
-    const mostPlayedSongTitle = topSongs[0].title;
-
-    const questions = [
-        {
-            question: `Wie oft wurde der meistgespielte Song insgesamt abgespielt?`,
-            ...shuffleArrayWithCorrectAnswer(topSongs.map(song => song.playCount), topSongs[0].playCount)
-        },
-        {
-            question: "Wie oft kommt in allen gespielten Songs der letzten Woche das Wort «Love» vor?",
-            ...shuffleArrayWithCorrectAnswer([loveCount, ...wrongAnswersForLoveCount], loveCount)
-        },
-        {
-            question: "Wie oft kommt in allen gespielten Songs der letzten Woche das Wort «Dance» vor?",
-            ...shuffleArrayWithCorrectAnswer([danceCount, ...wrongAnswersForDanceCount], danceCount)
-        },
-        {
-            question: "Wie oft kommt in allen gespielten Songs der letzten Woche das Wort «My» vor?",
-            ...shuffleArrayWithCorrectAnswer([myCount, ...wrongAnswersForMyCount], myCount)
-        },
-        {
-            question: "Welcher Künstler wurde in dieser Woche insgesamt am meisten im Radio gespielt?",
-            ...shuffleArrayWithCorrectAnswer(topArtists, topArtists[0])
-        },
-        {
-            question: "Welcher dieser Songs wurde in dieser Woche am meisten gespielt?",
-            ...shuffleArrayWithCorrectAnswer(topSongs.map(song => song.title), topSongs[0].title)
         }
-    ];
 
+        const mostPlayedSongTitle = topSongs[0].title;
+
+        questions = [
+            {
+                question: `Wie oft wurde der meistgespielte Song insgesamt abgespielt?`,
+                ...shuffleArrayWithCorrectAnswer(topSongs.map(song => song.playCount), topSongs[0].playCount)
+            },
+            {
+                question: "Wie oft kommt in allen gespielten Songs der letzten Woche das Wort «Love» vor?",
+                ...shuffleArrayWithCorrectAnswer([loveCount, ...wrongAnswersForLoveCount], loveCount)
+            },
+            {
+                question: "Wie oft kommt in allen gespielten Songs der letzten Woche das Wort «Dance» vor?",
+                ...shuffleArrayWithCorrectAnswer([danceCount, ...wrongAnswersForDanceCount], danceCount)
+            },
+            {
+                question: "Wie oft kommt in allen gespielten Songs der letzten Woche das Wort «My» vor?",
+                ...shuffleArrayWithCorrectAnswer([myCount, ...wrongAnswersForMyCount], myCount)
+            },
+            {
+                question: "Welcher Künstler wurde in dieser Woche insgesamt am meisten im Radio gespielt?",
+                ...shuffleArrayWithCorrectAnswer(topArtists, topArtists[0])
+            },
+            {
+                question: "Welcher dieser Songs wurde in dieser Woche am meisten gespielt?",
+                ...shuffleArrayWithCorrectAnswer(topSongs.map(song => song.title), topSongs[0].title)
+            }
+        ];
+
+        // Speichere die topSongs für spätere Verwendung
+        window.topSongs = topSongs;
+    }
+
+    let questions = [];
     let currentQuestionIndex = 0;
     let selectedAnswerIndex = null;
-    let shuffledQuestions = [];
 
     function shuffleQuestions() {
-        shuffledQuestions = [...questions];
-        shuffledQuestions.sort(() => Math.random() - 0.5);
+        questions = [...questions];
+        questions.sort(() => Math.random() - 0.5);
     }
 
     function showQuestion() {
         selectedAnswerIndex = null;
-        const currentQuestion = shuffledQuestions[currentQuestionIndex];
+        const currentQuestion = questions[currentQuestionIndex];
         const contentDiv = document.getElementById('content');
 
         let html = `<h2>${currentQuestion.question}</h2><div class="answer-boxes">`;
@@ -187,15 +203,13 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     function showAnswer() {
-        const currentQuestion = shuffledQuestions[currentQuestionIndex];
+        const currentQuestion = questions[currentQuestionIndex];
         const contentDiv = document.getElementById('content');
 
         const isCorrect = currentQuestion.answers[selectedAnswerIndex] === currentQuestion.correct;
 
-        // Consistent answer feedback message ("Richtig" / "Falsch") with same layout as other answer pages
         let html = `<h2>${isCorrect ? 'Richtig!' : 'Das war leider falsch.'}</h2><div class="answer-boxes">`;
 
-        // Display the answer options just like other answer pages
         currentQuestion.answers.forEach((answer, index) => {
             let backgroundColor = '';
             let textColor = '';
@@ -221,17 +235,17 @@ document.addEventListener('DOMContentLoaded', async function () {
         html += `</div><div class="button-container" style="display: flex; justify-content: space-between; margin-top: 20px;">`;
         html += `<button class="button" id="nextButton">Weiter</button></div>`;
 
-        // Check if this is the "most-played song" question to add the white bar with the four song boxes
+        // Füge den weißen Balken und die Songs nur bei der Songfrage hinzu
         if (currentQuestion.question.includes('am meisten gespielt')) {
             console.log('Most played song question detected! Adding top songs to the page.');
 
-            // Apply white background dynamically when showing this section
-            document.body.classList.add('white-bg');  // Add the white background
+            // Fügen Sie den weißen Hintergrund für die Seite hinzu
+            document.body.classList.add('white-bg');  // White background below the current content
 
-            // Extend the page by adding the white bar and the four song boxes below the "Weiter" button
-            html += `<div id="top-songs-container" class="top-songs" style="margin-top: 20px;">`;
+            // Den weißen Balken mit den Song-Boxen unterhalb der Antwortboxen hinzufügen
+            html += `<div id="top-songs-container" class="top-songs">`;
 
-            topSongs.forEach(song => {
+            window.topSongs.forEach(song => {
                 console.log('Adding song:', song); // Logging each song being added
                 html += `
                     <div class="song-box">
@@ -249,10 +263,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         contentDiv.innerHTML = html;
 
         document.getElementById('nextButton').addEventListener('click', function () {
-            // Immediately remove the white background when the user clicks "Weiter"
+            // Entferne den weißen Hintergrund, wenn zur nächsten Frage gewechselt wird
             document.body.classList.remove('white-bg');
 
-            if (currentQuestionIndex < shuffledQuestions.length - 1) {
+            if (currentQuestionIndex < questions.length - 1) {
                 currentQuestionIndex++;
                 showQuestion();
             } else {
@@ -298,8 +312,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
-    document.getElementById('startQuiz').addEventListener('click', function () {
-        shuffleQuestions();
-        showQuestion();
-    });
+    // Das Quiz startet erst, wenn auf den Button geklickt wird
+    document.getElementById('startQuiz').addEventListener('click', startQuiz);
 });
