@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', function () {
     let questionBoxWidths = [];   // Um die Breite der Antwortboxen zu speichern
     let data = null;  // Um die Quizdaten zu speichern
 
+    // Chart.js Script hinzufügen
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+    document.head.appendChild(script);
+
     // Die Funktion lädt die Fragen von der API
     async function loadQuestions() {
         try {
@@ -122,10 +127,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const mostPlayedSongTitle = topSongs[0].title;
 
+        // Simulierte Daten für Abspieler an 7 Tagen für das Balkendiagramm
+        let dailyPlays = Array(7).fill(0);
+        recentSongs.forEach(song => {
+            if (song.title === mostPlayedSongTitle) {
+                const songDate = new Date(song.playFrom);
+                const dayIndex = (songDate.getTime() - sevenDaysAgo.getTime()) / (1000 * 60 * 60 * 24);
+                if (dayIndex >= 0 && dayIndex < 7) {
+                    dailyPlays[Math.floor(dayIndex)]++;
+                }
+            }
+        });
+
         questions = [
             {
                 question: `Wie oft wurde der meistgespielte Song insgesamt abgespielt?`,
-                ...shuffleArrayWithCorrectAnswer(topSongs.map(song => song.playCount), topSongs[0].playCount)
+                ...shuffleArrayWithCorrectAnswer(topSongs.map(song => song.playCount), topSongs[0].playCount),
+                chartData: dailyPlays  // Daten für das Balkendiagramm speichern
             },
             {
                 question: "Wie oft kommt in allen gespielten Songs der letzten Woche das Wort «Love» vor?",
@@ -149,7 +167,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         ];
 
-        // Speichere die topSongs für spätere Verwendung
         window.topSongs = topSongs;
     }
 
@@ -235,18 +252,18 @@ document.addEventListener('DOMContentLoaded', function () {
         html += `</div><div class="button-container" style="display: flex; justify-content: space-between; margin-top: 20px;">`;
         html += `<button class="button" id="nextButton">Weiter</button></div>`;
 
-        // Füge den weißen Balken und die Songs nur bei der Songfrage hinzu
-        if (currentQuestion.question.includes('am meisten gespielt')) {
-            console.log('Most played song question detected! Adding top songs to the page.');
+        // Falls es die Frage "Wie oft wurde der meistgespielte Song insgesamt abgespielt?" ist, füge das Balkendiagramm hinzu
+        if (currentQuestion.question.includes('Wie oft wurde der meistgespielte Song insgesamt abgespielt')) {
+            html += `<div id="chart-container" style="width: 100%; height: 400px;">
+                        <canvas id="barChart"></canvas>
+                     </div>`;
+        }
 
-            // Fügen Sie den weißen Hintergrund für die Seite hinzu
-            document.body.classList.add('white-bg');  // White background below the current content
-
-            // Den weißen Balken mit den Song-Boxen unterhalb der Antwortboxen hinzufügen
+        // Füge die Song-Boxen hinzu, wenn es die Frage nach den meistgespielten Songs ist
+        if (currentQuestion.question.includes('Welcher dieser Songs wurde in dieser Woche am meisten gespielt')) {
             html += `<div id="top-songs-container" class="top-songs">`;
 
             window.topSongs.forEach(song => {
-                console.log('Adding song:', song); // Logging each song being added
                 html += `
                     <div class="song-box">
                         <h3>${song.title}</h3>
@@ -262,6 +279,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         contentDiv.innerHTML = html;
 
+        // Falls es die Frage "Wie oft wurde der meistgespielte Song insgesamt abgespielt?" ist, erstelle das Diagramm
+        if (currentQuestion.question.includes('Wie oft wurde der meistgespielte Song insgesamt abgespielt')) {
+            createBarChart(currentQuestion.chartData);
+        }
+
         document.getElementById('nextButton').addEventListener('click', function () {
             // Entferne den weißen Hintergrund, wenn zur nächsten Frage gewechselt wird
             document.body.classList.remove('white-bg');
@@ -275,6 +297,30 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         applySavedDimensionsToAnswerBoxes();
+    }
+
+    function createBarChart(data) {
+        const ctx = document.getElementById('barChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Tag 1', 'Tag 2', 'Tag 3', 'Tag 4', 'Tag 5', 'Tag 6', 'Tag 7'],
+                datasets: [{
+                    label: 'Abspieler',
+                    data: data,
+                    backgroundColor: 'rgba(0, 85, 255, 0.5)',
+                    borderColor: 'rgba(0, 85, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
     }
 
     function showResult() {
