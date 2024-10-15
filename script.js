@@ -252,9 +252,10 @@ document.addEventListener('DOMContentLoaded', function () {
         html += `</div><div class="button-container" style="display: flex; justify-content: space-between; margin-top: 20px;">`;
         html += `<button class="button" id="nextButton">Weiter</button></div>`;
 
-        // Falls es die Frage "Wie oft wurde der meistgespielte Song insgesamt abgespielt?" ist, füge das Balkendiagramm hinzu
+        // Falls es die Frage "Wie oft wurde der meistgespielte Song insgesamt abgespielt?" ist, füge den Titel und das Balkendiagramm hinzu
         if (currentQuestion.question.includes('Wie oft wurde der meistgespielte Song insgesamt abgespielt')) {
             html += `<div id="chart-container" style="width: 100%; height: 400px;">
+                        <h3>So oft lief der meistgespielte Song in den letzten Wochen auf Radio Energy:</h3>
                         <canvas id="barChart"></canvas>
                      </div>`;
         }
@@ -279,15 +280,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         contentDiv.innerHTML = html;
 
-        // Falls es die Frage "Wie oft wurde der meistgespielte Song insgesamt abgespielt?" ist, erstelle das Diagramm
+        // Falls es die Frage "Wie oft wurde der meistgespielte Song insgesamt abgespielt" ist, erstelle das Diagramm
         if (currentQuestion.question.includes('Wie oft wurde der meistgespielte Song insgesamt abgespielt')) {
             createBarChart(currentQuestion.chartData);
         }
 
         document.getElementById('nextButton').addEventListener('click', function () {
-            // Entferne den weißen Hintergrund, wenn zur nächsten Frage gewechselt wird
-            document.body.classList.remove('white-bg');
-
             if (currentQuestionIndex < questions.length - 1) {
                 currentQuestionIndex++;
                 showQuestion();
