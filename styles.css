@@ -1,16 +1,14 @@
 /* Default body background (blue background until white background is triggered) */
 body {
-    background: linear-gradient(to bottom, #0055ff 0%, #0055ff 100%);
-    transition: background 0.5s ease;
+    margin: 0;
     padding: 0px 350px;
-    min-height: 100vh;
+    background: linear-gradient(to bottom, #0055ff, #001a66) no-repeat;
+    min-height: 100vh; /* Stellt sicher, dass der Body mindestens die Höhe des Bildschirms hat */
     color: white;
     font-family: Raleway, sans-serif;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    overflow-x: hidden; /* Verhindert horizontales Scrollen */
+    flex-direction: column; /* Damit die header und die container untereinander sind */
+    align-items: center; /* Zentriert die Inhalte horizontal */
 }
 
 /* Anpassung der Breite für Tablets und Mobilgeräte */
@@ -45,23 +43,24 @@ h1 {
     font-size: 3.3rem;
     font-weight: 200;
     line-height: 3.75rem;
-    margin-bottom: 40px;
 }
 
-h1 .highlight {
+.highlight {
     font-family: Kalnia;
     font-weight: 600;
-    /* Entferne die spezifische Schriftgröße */
-    font-size: inherit; /* Vererbt die Schriftgröße des umgebenden Textes */
+    font-size: 3.3rem;
 }
 
 h2 {
     font-size: 2.222rem;
     font-weight: 200;
     line-height: 2.75rem;
-    margin-top: 0;
-    text-align: center;
-    margin-bottom: 40px;
+}
+
+.highlighth2 {
+    font-family: Kalnia;
+    font-weight: 600;
+    font-size: 2.222rem;
 }
 
 h3 {
@@ -69,53 +68,180 @@ h3 {
     font-weight: 200;
     line-height: 2rem;
     color: black;
-    text-align: center;
-    margin-top: 30px;
+}
+
+.highlighth3 {
+    font-family: Kalnia;
+    font-weight: 600;
+    font-size: 1.667rem;
 }
 
 p {
     font-size: 1rem;
 }
 
+.bold {
+    font-weight: 700;
+    color: black;
+    padding-bottom: 0;
+}
+
+@media (max-width: 900px) {
+    h1 {
+        font-size: 2.5rem;
+        line-height: 3rem;
+    }
+
+    .highlight {
+        font-size: 2.5rem;
+    }
+
+    h2 {
+        font-size: 1.667rem;
+        line-height: 2rem;
+    }
+
+    .highlighth2 {
+        font-size: 1.667rem;
+    }
+
+    h3 {
+        font-size: 1.389rem;
+        line-height: 1.667rem;
+    }
+
+    .highlighth3 {
+        font-size: 1.389rem;
+    }
+    p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+        line-height: 2.2rem;
+
+    }
+
+    .highlight {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.389rem;
+        line-height: 1.5rem;
+    }
+
+    .highlighth2 {
+        font-size: 1.389rem;
+    }
+
+    h3 {
+        font-size: 1.111rem;
+        line-height: 1.3rem;
+    }
+    .highlighth3 {
+        font-size: 1.111rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.667rem;
+        line-height: 1.8rem;
+    }
+
+    .highlight {
+        font-size: 1.667rem;
+    }
+
+    h2 {
+        font-size: 1.111rem;
+        line-height: 1.2rem;
+    }
+    .highlighth2 {
+        font-size: 1.111rem;
+    }
+
+    h3 {
+        font-size: 1rem;
+        line-height: 1.1rem;
+    }
+
+    .highlighth3 {
+        font-size: 1rem;
+    }
+
+    p {
+        font-size: 0.889rem;
+    }
+}
+
+
+
 /* Answer boxes */
+.question {
+    font-size: 2.5rem; /* Schriftgröße für die Frage */
+    margin-bottom: 40px; /* Abstand unter der Frage */
+}
+
 .answer-boxes {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Zweispaltiges Layout */
+    grid-template-columns: repeat(2, 2fr); /* Zweispaltiges Layout */
     gap: 20px;
-    margin-top: 20px;
-    justify-content: center; /* Zentrieren der Antwortboxen */
-    align-items: center;
-    width: 100%;
 }
 
 @media (max-width: 768px) {
     .answer-boxes {
         grid-template-columns: 1fr;
         gap: 10px;
-        justify-items: center;
         align-items: center;
     }
 }
 
 .answer-box {
-    background: rgba(255, 255, 255, 0.1);
-    border: 2.5px solid rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
-    color: white;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: rgba(255, 255, 255, 0.1); /* Heller Hintergrund für die Boxen */
+    border: 2.5px solid rgba(255, 255, 255, 0.5); /* Rahmen für die Boxen */
+    border-radius: 10px; /* Abgerundete Ecken */
+    color: white; /* Textfarbe */
+    font-size: 1rem; /* Schriftgröße */
+    flex: 0 1 calc(50% - 20px); /* Setzt die Breite auf 50% - 20px für zwei Boxen nebeneinander */
+    cursor: pointer; /* Zeiger beim Hover */
     min-height: 100px;
-    min-width: 150px;
-    cursor: pointer;
-    word-wrap: break-word;
-    padding: 10px;
-    box-sizing: border-box;
+    display: flex; /* Flexbox für zentrierten Text */
+    align-items: center; /* Zentriert den Text vertikal */
+    justify-content: center;
+    transition: background-color 0.3s;
+}
+
+.answer-box:focus {
+    color: #0022ee;
+}
+
+@media (max-width: 768px) {
+    .answer-boxes {
+        grid-template-columns: repeat(1, 1fr); /* Eine Box unter der anderen */
+        gap: 10px;
+    }
+
+    .answer-box {
+        flex: 0 1 calc(100% - 20px); /* Volle Breite für eine Box */
+        min-height: 50px;
+    }
+}
+
+.answer-box p {
+    font-weight: 700;
 }
 
 .answer-box:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.2); /* Hintergrundfarbe beim Hover */
 }
 
 .answer-box.active {
@@ -149,12 +275,11 @@ p {
 
 /* Container styling */
 .container {
+    height: calc(100vh - 120.5px);
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    flex-grow: 1;
-    margin-bottom: 40px;
 }
 
 /* Button styles */
@@ -179,18 +304,32 @@ p {
 
 .button-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .button {
+        font-size: 1.111rem;
+        padding: 10px 30px;
+        margin: 10px auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .button {
+        font-size: .9rem;
+        padding: 10px 20px;
+        margin: 0px auto;
+    }
 }
 
 /* White bar for the song box container */
 #top-songs-container {
     display: flex;
     justify-content: center;
-    align-items: center;
     padding: 30px 0;
     background-color: white;
-    width: 100vw;
     box-sizing: border-box;
     margin-top: 20px;
     min-height: 250px;
@@ -276,78 +415,4 @@ p {
     text-align: center;
 }
 
-/* Responsive typography for smaller screens */
-@media (max-width: 900px) {
-    h1 {
-        font-size: 2.5rem;
-        line-height: 3rem;
-    }
 
-    .highlight {
-        font-size: inherit; /* Gleiche Größe wie der umgebende Text */
-    }
-
-    h2, .highlighth2 {
-        font-size: 1.667rem;
-        line-height: 2rem;
-    }
-
-    h3, .highlighth3 {
-        font-size: 1.389rem;
-        line-height: 1.667rem;
-    }
-
-    p {
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 768px) {
-    h1 {
-        font-size: 2rem;
-        line-height: 2.2rem;
-    }
-
-    .highlight {
-        font-size: inherit; /* Gleiche Größe wie der umgebende Text */
-    }
-
-    h2, .highlighth2 {
-        font-size: 1.389rem;
-        line-height: 1.5rem;
-    }
-
-    h3, .highlighth3 {
-        font-size: 1.111rem;
-        line-height: 1.3rem;
-    }
-
-    p {
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    h1 {
-        font-size: 1.667rem;
-        line-height: 1.8rem;
-    }
-
-    .highlight {
-        font-size: inherit; /* Gleiche Größe wie der umgebende Text */
-    }
-
-    h2, .highlighth2 {
-        font-size: 1.111rem;
-        line-height: 1.2rem;
-    }
-
-    h3, .highlighth3 {
-        font-size: 1rem;
-        line-height: 1.1rem;
-    }
-
-    p {
-        font-size: 0.889rem;
-    }
-}
