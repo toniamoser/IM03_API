@@ -97,21 +97,21 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         let wrongAnswersForLoveCount = [
-            getRandomNumber(500, 1000),
-            getRandomNumber(500, 1000),
-            getRandomNumber(500, 1000)
+            getRandomNumber(10, 200),
+            getRandomNumber(10, 200),
+            getRandomNumber(10, 200)
         ];
 
         let wrongAnswersForDanceCount = [
-            getRandomNumber(500, 1000),
-            getRandomNumber(500, 1000),
-            getRandomNumber(500, 1000)
+            getRandomNumber(10, 100),
+            getRandomNumber(10, 100),
+            getRandomNumber(10, 100)
         ];
 
         let wrongAnswersForMyCount = [
-            getRandomNumber(500, 1000),
-            getRandomNumber(500, 1000),
-            getRandomNumber(500, 1000)
+            getRandomNumber(10, 100),
+            getRandomNumber(10, 100),
+            getRandomNumber(10, 100)
         ];
 
         function shuffleArrayWithCorrectAnswer(answers, correctAnswer) {
@@ -327,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: 'Abspieler',
                     data: data,
-                    backgroundColor: 'rgba(0, 85, 255, 0.5)',
+                    backgroundColor: '#0022ee',
                     borderColor: 'rgba(0, 85, 255, 1)',
                     borderWidth: 1
                 }]
