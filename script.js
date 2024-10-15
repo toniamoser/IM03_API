@@ -306,9 +306,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: 'Abspieler',
                     data: data,
-                    backgroundColor: 'rgba(0, 85, 255, 0.5)',
-                    borderColor: 'rgba(0, 85, 255, 1)',
-                    borderWidth: 1
+                    backgroundColor: '#0022ee',
                 }]
             },
             options: {
