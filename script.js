@@ -3,16 +3,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const url = 'https://projektim03.mariareichmuth.ch/etl/unload.php';
 
-    let questionBoxHeights = [];  // Um die Höhe der Antwortboxen zu speichern
-    let questionBoxWidths = [];   // Um die Breite der Antwortboxen zu speichern
-    let data = null;  // Um die Quizdaten zu speichern
+    let questionBoxHeights = [];
+    let questionBoxWidths = [];
+    let data = null;
+    let score = 0; // Variable für den Punktestand
 
-    // Chart.js Script hinzufügen
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
     document.head.appendChild(script);
 
-    // Die Funktion lädt die Fragen von der API
     async function loadQuestions() {
         try {
             const response = await fetch(url);
@@ -25,11 +24,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Starte das Quiz und zeige die erste Frage
     async function startQuiz() {
         if (!data) {
             console.log('Lade Daten...');
-            data = await loadQuestions();  // Daten nur einmal laden
+            data = await loadQuestions();
 
             if (!data || data.length === 0) {
                 console.error('Fehler beim Abrufen der Daten.');
@@ -37,12 +35,11 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        initializeQuiz(data);  // Initialisiere das Quiz
+        initializeQuiz(data);
         shuffleQuestions();
         showQuestion();
     }
 
-    // Initialisiere das Quiz und bereite die Fragen vor
     function initializeQuiz(data) {
         const now = new Date();
         const sevenDaysAgo = new Date(now);
@@ -74,12 +71,12 @@ document.addEventListener('DOMContentLoaded', function () {
         let topSongs = Object.entries(topSongsFrequency)
             .map(([key, count]) => {
                 let [artist, title] = key.split("-");
-                let song = recentSongs.find(song => song.title === title && song.artist === artist); // Find song details
+                let song = recentSongs.find(song => song.title === title && song.artist === artist);
                 return {
                     artist: artist,
                     title: title,
                     playCount: count,
-                    imageUrl: song ? song.imageUrl : ''  // Safeguard for missing imageUrl
+                    imageUrl: song ? song.imageUrl : ''
                 };
             })
             .filter(song => song.title !== "News Bern" && song.artist && song.title)
@@ -127,7 +124,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const mostPlayedSongTitle = topSongs[0].title;
 
-        // Simulierte Daten für Abspieler an 7 Tagen für das Balkendiagramm
         let dailyPlays = Array(7).fill(0);
         recentSongs.forEach(song => {
             if (song.title === mostPlayedSongTitle) {
@@ -143,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
             {
                 question: `Wie oft wurde der meistgespielte Song insgesamt abgespielt?`,
                 ...shuffleArrayWithCorrectAnswer(topSongs.map(song => song.playCount), topSongs[0].playCount),
-                chartData: dailyPlays  // Daten für das Balkendiagramm speichern
+                chartData: dailyPlays
             },
             {
                 question: "Wie oft kommt in allen gespielten Songs der letzten Woche das Wort «Love» vor?",
@@ -225,7 +221,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const isCorrect = currentQuestion.answers[selectedAnswerIndex] === currentQuestion.correct;
 
-        let html = `<h2>${isCorrect ? 'Richtig!' : 'Das war leider falsch.'}</h2><div class="answer-boxes">`;
+        if (isCorrect) {
+            score++;  // Erhöhe den Punktestand, wenn die Antwort richtig ist
+        }
+
+        // Ergebnis (Richtig/Falsch) bleibt oben
+        let html = `<h2>${isCorrect ? 'Richtig!' : 'Das war leider falsch.'}</h2>`;
+
+        // Frage direkt unterhalb der Antwortanzeige anzeigen
+        html += `<h3 style="color: white;">${currentQuestion.question}</h3><div class="answer-boxes">`;
 
         currentQuestion.answers.forEach((answer, index) => {
             let backgroundColor = '';
@@ -255,19 +259,20 @@ document.addEventListener('DOMContentLoaded', function () {
         // Falls es die Frage "Wie oft wurde der meistgespielte Song insgesamt abgespielt?" ist, füge den Titel und das Balkendiagramm hinzu
         if (currentQuestion.question.includes('Wie oft wurde der meistgespielte Song insgesamt abgespielt')) {
             html += `<div id="chart-container" style="width: 100%; height: 400px;">
-                        <h3>So oft lief der meistgespielte Song in den letzten Wochen auf Radio Energy:</h3>
+                        <h3>So oft lief der meistgespielte Song in der <span class="highlighth3">letzten Woche</span> auf Radio Energy:</h3>
                         <canvas id="barChart"></canvas>
                      </div>`;
         }
 
         // Füge die Song-Boxen hinzu, wenn es die Frage nach den meistgespielten Songs ist
         if (currentQuestion.question.includes('Welcher dieser Songs wurde in dieser Woche am meisten gespielt')) {
-            html += `<div id="top-songs-container" class="top-songs">`;
+            html += `<div id="top-songs-container" class="top-songs">
+                        <h3>Diese Songs wurden in der <span class="highlighth3">letzten Woche</span> am meisten gespielt:</h3>`;
 
             window.topSongs.forEach(song => {
                 html += `
                     <div class="song-box">
-                        <h3>${song.title}</h3>
+                        <p class="bold">${song.title}</p>
                         <p>${song.artist}</p>
                         <img src="${song.imageUrl}" alt="Album Cover">
                         <div class="play-count">${song.playCount}x</div>
@@ -297,6 +302,22 @@ document.addEventListener('DOMContentLoaded', function () {
         applySavedDimensionsToAnswerBoxes();
     }
 
+    function showResult() {
+        const contentDiv = document.getElementById('content');
+        contentDiv.innerHTML = `
+            <h1>Du hast <span class="highlight">${score} von 7 Punkten</span> erreicht!</h1>
+            <p>Du scheinst die aktuellen Hits ziemlich gut zu kennen und bist auf jeden Fall am Puls der Zeit. Nur noch ein kleines Stückchen bis zur Perfektion!</p>
+            <button class="button" id="restartQuiz">Quiz wiederholen</button>
+        `;
+
+        document.getElementById('restartQuiz').addEventListener('click', function () {
+            currentQuestionIndex = 0;
+            score = 0;  // Punktestand zurücksetzen
+            shuffleQuestions();
+            showQuestion();
+        });
+    }
+
     function createBarChart(data) {
         const ctx = document.getElementById('barChart').getContext('2d');
         new Chart(ctx, {
@@ -316,21 +337,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
             }
-        });
-    }
-
-    function showResult() {
-        const contentDiv = document.getElementById('content');
-        contentDiv.innerHTML = `
-            <h2>Quiz beendet!</h2>
-            <p>Danke fürs Mitmachen!</p>
-            <button class="button" id="restartQuiz">Quiz wiederholen</button>
-        `;
-
-        document.getElementById('restartQuiz').addEventListener('click', function () {
-            currentQuestionIndex = 0;
-            shuffleQuestions();
-            showQuestion();
         });
     }
 
@@ -354,6 +360,5 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Das Quiz startet erst, wenn auf den Button geklickt wird
     document.getElementById('startQuiz').addEventListener('click', startQuiz);
 });
