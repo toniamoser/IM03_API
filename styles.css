@@ -78,6 +78,8 @@ h3 {
 
 p {
     font-size: 1rem;
+    font-weight: 200;
+    font-family: Raleway, sans-serif;
 }
 
 .bold {
@@ -323,95 +325,55 @@ p {
     }
 }
 
-/* White bar for the song box container */
-#top-songs-container {
-    display: flex;
-    justify-content: center;
-    padding: 30px 0;
+/* Song title, artist, album cover, play count styling */
+.statistics {
     background-color: white;
-    box-sizing: border-box;
-    margin-top: 20px;
-    min-height: 250px;
-    position: relative;
-    flex-wrap: wrap; /* Sicherstellen, dass Song-Boxen richtig platziert werden */
-    justify-content: center;
 }
 
-/* Transparent song box styling */
+.top-songs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    text-align: left;
+}
+
+.top-songs p{
+    color: black;
+}
+
 .song-box {
-    background-color: transparent;
-    border: none;
-    text-align: center;
-    flex: 1;
-    max-width: 150px;
+    position: relative; /* Position der Elternklasse auf relativ setzen */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    margin-bottom: 10px;
-}
-
-@media (max-width: 768px) {
-    #top-songs-container {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    .song-box {
-        max-width: 120px;
-    }
-}
-
-/* Song title, artist, album cover, play count styling */
-.song-box h3 {
-    margin: 10px 0 5px;
-    font-size: 1.2rem;
-    color: black;
+    text-align: left;
 }
 
 .song-box p {
-    margin: 5px 0 10px;
-    font-size: 1rem;
-    color: black;
+    padding: 0;
+    margin: 0;
 }
 
 .song-box img {
     width: 100px;
     height: 100px;
     border-radius: 10px;
-    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .play-count {
-    background-color: white;
-    color: #0055ff;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    font-weight: bold;
+    background-color: rgba(0, 34, 238); /* Hellerer Hintergrund für bessere Sichtbarkeit */
+    color: white;
+    padding: 5px 8px;
+    border-radius: 35px;
     text-align: center;
-    margin-top: 10px;
+    position: absolute; /* Absolute Positionierung */
+    bottom: -12px; /* Abstand von unten */
 }
 
 /* Chart container styling with title */
 #chart-container {
     background-color: white;
-    padding: 20px;
-    margin-top: 20px;
-    width: 100vw;
-    /* height: calc(100vh - 60px); /* Höhe anpassen, damit sie bis zum unteren Rand reicht */
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    overflow-y: visible;
-}
-
-#chart-container h3 {
-    margin-bottom: 20px;
-    color: black;
-    text-align: center;
 }
 
 

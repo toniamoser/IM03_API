@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Falls es die Frage "Wie oft wurde der meistgespielte Song insgesamt abgespielt?" ist, füge den Titel und das Balkendiagramm hinzu
         if (currentQuestion.question.includes('Wie oft wurde der meistgespielte Song insgesamt abgespielt')) {
-            html += `<div id="chart-container" style="width: 100%; height: 400px;">
+            html += `<div body.white-bg id="chart-container" style="width: 100%; height: 400px;">
                         <h3>So oft lief der meistgespielte Song in der <span class="highlighth3">letzten Woche</span> auf Radio Energy:</h3>
                         <canvas id="barChart"></canvas>
                      </div>`;
@@ -266,8 +266,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Füge die Song-Boxen hinzu, wenn es die Frage nach den meistgespielten Songs ist
         if (currentQuestion.question.includes('Welcher dieser Songs wurde in dieser Woche am meisten gespielt')) {
-            html += `<div id="top-songs-container" class="top-songs">
-                        <h3>Diese Songs wurden in der <span class="highlighth3">letzten Woche</span> am meisten gespielt:</h3>`;
+            html += `<div class='statistics'> <h3>Diese Songs wurden in der <span class="highlighth3">letzten Woche</span> am meisten gespielt:</h3> 
+            <div id="top-songs-container" class="top-songs">
+                        `;
 
             window.topSongs.forEach(song => {
                 html += `
@@ -280,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 `;
             });
 
-            html += `</div>`;
+            html += `</div> </div>`;
         }
 
         contentDiv.innerHTML = html;
@@ -323,13 +324,11 @@ document.addEventListener('DOMContentLoaded', function () {
         new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Tag 1', 'Tag 2', 'Tag 3', 'Tag 4', 'Tag 5', 'Tag 6', 'Tag 7'],
+                labels: ['Tag1', 'Tag 2', 'Tag 3', 'Tag 4', 'Tag 5', 'Tag 6', 'Tag 7'],
                 datasets: [{
-                    label: 'Abspieler',
+                    label: 'Anzahl der Plays',
                     data: data,
                     backgroundColor: '#0022ee',
-                    borderColor: 'rgba(0, 85, 255, 1)',
-                    borderWidth: 1
                 }]
             },
             options: {
