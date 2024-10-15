@@ -400,7 +400,7 @@ p {
     padding: 20px;
     margin-top: 20px;
     width: 100vw;
-    height: calc(100vh - 60px); /* Höhe anpassen, damit sie bis zum unteren Rand reicht */
+    /* height: calc(100vh - 60px); /* Höhe anpassen, damit sie bis zum unteren Rand reicht */
     box-sizing: border-box;
     display: flex;
     flex-direction: column;

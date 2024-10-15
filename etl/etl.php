@@ -32,27 +32,40 @@ try {
 }
 
 // Prepare the SQL statement (without the id field if it's auto-increment)
-$sql = "INSERT INTO MusicPlayouts (playFrom, imageUrl, audioUrl, title, artist) 
-        VALUES (:playFrom, :imageUrl, :audioUrl, :title, :artist)";
-$stmt = $pdo->prepare($sql);
+$sqlInsert = "INSERT INTO MusicPlayouts (playFrom, imageUrl, audioUrl, title, artist) 
+              VALUES (:playFrom, :imageUrl, :audioUrl, :title, :artist)";
+$stmtInsert = $pdo->prepare($sqlInsert);
+
+// Prepare the SQL statement to check for duplicates
+$sqlCheck = "SELECT COUNT(*) FROM MusicPlayouts WHERE playFrom = :playFrom";
+$stmtCheck = $pdo->prepare($sqlCheck);
 
 // Iterate through the music data array
 foreach ($data as $song) {
     // Ensure required fields are set
     if (isset($song['playFrom'], $song['imageUrl'], $song['audioUrl'], $song['title'])) {
-        // Use NULL if 'artist' is missing since it's optional
-        $stmt->execute([
-            ':playFrom' => $song['playFrom'],
-            ':imageUrl' => $song['imageUrl'],
-            ':audioUrl' => $song['audioUrl'],
-            ':title' => $song['title'],
-            ':artist' => $song['artist'] ?? null // Default to NULL if artist is not set
-        ]);
+        // Check if a record with the same playFrom already exists
+        $stmtCheck->execute([':playFrom' => $song['playFrom']]);
+        $count = $stmtCheck->fetchColumn();
+
+        if ($count == 0) {
+            // No duplicate found, insert the new record
+            $stmtInsert->execute([
+                ':playFrom' => $song['playFrom'],
+                ':imageUrl' => $song['imageUrl'],
+                ':audioUrl' => $song['audioUrl'],
+                ':title' => $song['title'],
+                ':artist' => $song['artist'] ?? null // Default to NULL if artist is not set
+            ]);
+        } else {
+            // Log or echo if song is skipped due to duplicate
+            echo "Skipping duplicate entry for playFrom: " . $song['playFrom'] . "\n";
+        }
     } else {
         // Log or echo if song is skipped due to missing mandatory data
         echo "Skipping song due to missing data. Required fields: playFrom, imageUrl, audioUrl, title.\n";
     }
 }
 
-echo "Data successfully inserted into the database.";
+echo "Data successfully processed.";
 ?>
