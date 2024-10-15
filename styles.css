@@ -275,7 +275,6 @@ p {
 
 /* Container styling */
 .container {
-    height: calc(100vh - 120.5px);
     display: flex;
     flex-direction: column;
     justify-content: center;
