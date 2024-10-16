@@ -305,12 +305,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function showResult() {
         const contentDiv = document.getElementById('content');
+        let resultMessage = '';
+    
+        // Je nach Punktzahl wird eine unterschiedliche Nachricht angezeigt
+        if (score <= 3) {
+            resultMessage = 'Es sieht so aus, als müsstest du die aktuellen Hits noch etwas besser kennenlernen. Versuche es noch einmal!';
+        } else if (score <= 5) {
+            resultMessage = 'Du scheinst die aktuellen Hits ziemlich gut zu kennen und bist auf jeden Fall am Puls der Zeit. Nur noch ein kleines Stückchen bis zur Perfektion!';
+        } else {
+            resultMessage = 'Wow, du bist ein wahrer Musikexperte und kennst die aktuellen Hits in- und auswendig! Großartig gemacht!';
+        }
+    
         contentDiv.innerHTML = `
             <h1>Du hast <span class="highlight">${score} von 7 Punkten</span> erreicht!</h1>
-            <p>Du scheinst die aktuellen Hits ziemlich gut zu kennen und bist auf jeden Fall am Puls der Zeit. Nur noch ein kleines Stückchen bis zur Perfektion!</p>
+            <p>${resultMessage}</p>
             <button class="button" id="restartQuiz">Quiz wiederholen</button>
         `;
-
+    
         document.getElementById('restartQuiz').addEventListener('click', function () {
             currentQuestionIndex = 0;
             score = 0;  // Punktestand zurücksetzen
@@ -318,6 +329,7 @@ document.addEventListener('DOMContentLoaded', function () {
             showQuestion();
         });
     }
+    
 
     function createBarChart(data) {
         const ctx = document.getElementById('barChart').getContext('2d');
