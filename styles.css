@@ -13,6 +13,8 @@ body {
 
 .wide {
     width: 100vw;
+    background-color: white;
+    text-align: center;
 }
 
 /* Anpassung der Breite für Tablets und Mobilgeräte */
@@ -50,11 +52,11 @@ h1 {
     margin-bottom: 0px;
 }
 
-.highlight {
+/* .highlight {
     font-family: Kalnia;
     font-weight: 600;
     font-size: 3.3rem;
-}
+} */
 
 h2 {
     font-size: 2.222rem;
@@ -65,7 +67,6 @@ h2 {
 .highlighth2 {
     font-family: Kalnia;
     font-weight: 600;
-    font-size: 2.222rem;
 }
 
 h3 {
@@ -75,11 +76,11 @@ h3 {
     color: black;
 }
 
-.highlighth3 {
+/* .highlighth3 {
     font-family: Kalnia;
     font-weight: 600;
     font-size: 1.667rem;
-}
+} */
 
 p {
     font-size: 1.25rem;
@@ -100,17 +101,13 @@ p {
         line-height: 2.8rem;
     }
 
-    .highlight {
+    /* .highlight {
         font-size: 2.5rem;
-    }
+    } */
 
     h2 {
         font-size: 1.667rem;
         line-height: 2rem;
-    }
-
-    .highlighth2 {
-        font-size: 1.667rem;
     }
 
     h3 {
@@ -118,9 +115,9 @@ p {
         line-height: 1.6rem;
     }
 
-    .highlighth3 {
+    /* .highlighth3 {
         font-size: 1.25rem;
-    }
+    } */
 
     p {
         font-size: 1rem;
@@ -172,11 +169,11 @@ p {
 @media (max-width: 768px) {
     .answer-boxes {
         grid-template-columns: repeat(1, 1fr); /* Eine Box unter der anderen */
-        gap: 20px;
+        gap: 10px;
     }
 
     .answer-box {
-        flex: 0 1 calc(100% - 20px); /* Volle Breite für eine Box */
+        width: 100%;
         min-height: 50px;
         border-radius: 100px;
     }
@@ -260,18 +257,30 @@ p {
 .statistics {
     background-color: white;
     margin-bottom: 50px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .statistics {
+        margin-bottom: 0px;
+    }
+    
+}
+
+.statistics h3 {
+    padding-bottom: 20px;
 }
 
 .top-songs {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     text-align: left;
+    gap: 20px;
 }
 
 @media (max-width: 480px) {
     .top-songs {
         grid-template-columns: repeat(2, 1fr);
-        row-gap: 30px;
     }
 }
 
@@ -280,11 +289,10 @@ p {
 }
 
 .song-box {
-    position: relative; /* Position der Elternklasse auf relativ setzen */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: left;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    position: relative; /* Wichtig: relative Positionierung */
+    padding-bottom: 40px;
 }
 
 .song-box p {
@@ -293,32 +301,44 @@ p {
 }
 
 .song-box img {
-    width: 100px;
-    height: 100px;
+    grid-column: span 1; /* Bild soll über 1 Spalten gehen */
+    width: 100%;
+    height: auto;
     border-radius: 10px;
     margin-top: 10px;
-}
-
-@media (max-width: 480px) {
-    .song-box img {
-        width: 150px;
-        height: 150px;
-    }
 }
 
 .play-count {
     background-color: rgba(0, 34, 238); /* Hellerer Hintergrund für bessere Sichtbarkeit */
     color: white;
-    padding: 5px 8px;
+    padding: 8px 8px;
     border-radius: 35px;
     text-align: center;
     position: absolute; /* Absolute Positionierung */
-    bottom: -12px; /* Abstand von unten */
+    bottom: 25px; /* Abstand vom unteren Rand der song-box */
+    left: 50%; /* Zentriert horizontal */
+    transform: translateX(-50%);
 }
 
 /* Chart container styling with title */
-#chart-container {
-    background-color: white;
+#chart-container, .statistics {
+    padding: 20px 350px;
+}
+
+@media (max-width: 1200px) {
+    #chart-container, .statistics {
+        padding: 20px 200px;
+    }
+}
+@media (max-width: 768px) {
+    #chart-container, .statistics {
+        padding: 20px 50px;
+    }
+}
+@media (max-width: 480px) {
+    #chart-container, .statistics {
+        padding: 20px 20px;
+    }
 }
 
 

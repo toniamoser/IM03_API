@@ -137,28 +137,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
         questions = [
             {
-                question: `Wie oft wurde der meistgespielte <span>Song</span> insgesamt abgespielt?`,
+                question: `Wie oft wurde der <span class="highlighth2">meistgespielte Song</span> insgesamt abgespielt?`,
                 ...shuffleArrayWithCorrectAnswer(topSongs.map(song => song.playCount), topSongs[0].playCount),
                 chartData: dailyPlays
             },
             {
-                question: "Wie oft kommt in allen gespielten Songs der letzten Woche das Wort «Love» vor?",
+                question: `Wie oft kam <span class="highlighth2">das Wort «Love»</span> in den Titeln aller in der letzten Woche gespielten Songs vor?`,
                 ...shuffleArrayWithCorrectAnswer([loveCount, ...wrongAnswersForLoveCount], loveCount)
             },
             {
-                question: "Wie oft kommt in allen gespielten Songs der letzten Woche das Wort «Dance» vor?",
+                question: `Wie oft kam <span class="highlighth2">das Wort «Dance»</span> in den Titeln aller in der letzten Woche gespielten Songs vor?`,
                 ...shuffleArrayWithCorrectAnswer([danceCount, ...wrongAnswersForDanceCount], danceCount)
             },
             {
-                question: "Wie oft kommt in allen gespielten Songs der letzten Woche das Wort «My» vor?",
+                question: `Wie oft kam <span class="highlighth2">das Wort «My»</span> in den Titeln aller in der letzten Woche gespielten Songs vor?`,
                 ...shuffleArrayWithCorrectAnswer([myCount, ...wrongAnswersForMyCount], myCount)
             },
             {
-                question: "Welcher Künstler wurde in dieser Woche insgesamt am meisten im Radio gespielt?",
+                question: `<span class="highlighth2">Welcher Künstler</span> wurde in dieser Woche insgesamt am meisten im Radio gespielt?`,
                 ...shuffleArrayWithCorrectAnswer(topArtists, topArtists[0])
             },
             {
-                question: "Welcher dieser Songs wurde in dieser Woche am meisten gespielt?",
+                question: `Welcher dieser Songs wurde in dieser Woche <span class="highlighth2">am meisten gespielt?</span>`,
                 ...shuffleArrayWithCorrectAnswer(topSongs.map(song => song.title), topSongs[0].title)
             }
         ];
@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Ergebnis (Richtig/Falsch) bleibt oben
-        let html = `<h2>${isCorrect ? 'Richtig!' : 'Das war leider falsch.'}</h2>`;
+        let html = `<h2>${isCorrect ? 'Yey, <span class="highlighth2">richtig!</span>' : 'Das war leider <span class="highlighth2">falsch.</span>'}</h2>`;
 
         // Frage direkt unterhalb der Antwortanzeige anzeigen
         html += `<h3 style="color: white;">${currentQuestion.question}</h3><div class="answer-boxes">`;
@@ -264,16 +264,16 @@ document.addEventListener('DOMContentLoaded', function () {
         html = '';
 
         // Falls es die Frage "Wie oft wurde der meistgespielte Song insgesamt abgespielt?" ist, füge den Titel und das Balkendiagramm hinzu
-        if (currentQuestion.question.includes('Wie oft wurde der meistgespielte Song insgesamt abgespielt')) {
-            html += `<div body.white-bg id="chart-container">
-                        <h3>So oft lief der meistgespielte Song in der <span class="highlighth3">letzten Woche</span> auf Radio Energy:</h3>
+        if (currentQuestion.question.includes('Wie oft wurde der <span class="highlighth2">meistgespielte Song</span> insgesamt abgespielt?')) {
+            html += `<div id="chart-container">
+                        <h3>So oft lief der meistgespielte Song in der <span class="highlighth2">letzten Woche</span> auf Radio Energy:</h3>
                         <canvas id="barChart"></canvas>
                      </div>`;
         }
 
         // Füge die Song-Boxen hinzu, wenn es die Frage nach den meistgespielten Songs ist
-        if (currentQuestion.question.includes('Welcher dieser Songs wurde in dieser Woche am meisten gespielt')) {
-            html += `<div class='statistics'> <h3>Diese Songs wurden in der <span class="highlighth3">letzten Woche</span> am meisten gespielt:</h3> 
+        if (currentQuestion.question.includes('Welcher dieser Songs wurde in dieser Woche <span class="highlighth2">am meisten gespielt?</span>')) {
+            html += `<div class='statistics'> <h3>Diese Songs wurden in der <span class="highlighth2">letzten Woche</span> am meisten gespielt:</h3> 
             <div id="top-songs-container" class="top-songs">
                         `;
 
@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function () {
         extraContentDiv.innerHTML = html;
 
         // Falls es die Frage "Wie oft wurde der meistgespielte Song insgesamt abgespielt" ist, erstelle das Diagramm
-        if (currentQuestion.question.includes('Wie oft wurde der meistgespielte Song insgesamt abgespielt')) {
+        if (currentQuestion.question.includes('Wie oft wurde der <span class="highlighth2">meistgespielte Song</span> insgesamt abgespielt?')) {
             createBarChart(currentQuestion.chartData);
         }
 
@@ -324,7 +324,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     
         contentDiv.innerHTML = `
-            <h1>Du hast <span class="highlight">${score} von 7 Punkten</span> erreicht!</h1>
+            <h1>Du hast <span class="highlighth2">${score} von 7 Punkten</span> erreicht!</h1>
             <p>${resultMessage}</p>
             <button class="button" id="restartQuiz">Quiz wiederholen</button>
         `;

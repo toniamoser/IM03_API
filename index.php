@@ -20,7 +20,7 @@
     
     <div class="container" id="content">
         <!-- Startseite mit dem Quiz-Button -->
-        <h1>Bist du bereit, dein Wissen über die <span class="highlight">aktuellen Hits der Woche</span> zu testen?</h1>
+        <h1>Bist du bereit, dein Wissen über die <span class="highlighth2">aktuellen Hits der Woche</span> zu testen?</h1>
         <div>
             <button type="button" class="button" id="startQuiz">Quiz starten</button>
         </div>
