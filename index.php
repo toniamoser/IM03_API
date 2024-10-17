@@ -25,6 +25,7 @@
             <button type="button" class="button" id="startQuiz">Quiz starten</button>
         </div>
     </div>
+    <div id="extra-content" class="wide"></div>
 
     <!-- Binde die externe script.js-Datei ein -->
     <script src="script.js" type="module"></script>

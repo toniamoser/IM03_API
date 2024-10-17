@@ -11,6 +11,10 @@ body {
     align-items: center; /* Zentriert die Inhalte horizontal */
 }
 
+.wide {
+    width: 100vw;
+}
+
 /* Anpassung der Breite für Tablets und Mobilgeräte */
 @media (max-width: 1200px) {
     body {

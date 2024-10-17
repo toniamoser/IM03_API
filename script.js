@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         questions = [
             {
-                question: `Wie oft wurde der meistgespielte Song insgesamt abgespielt?`,
+                question: `Wie oft wurde der meistgespielte <span>Song</span> insgesamt abgespielt?`,
                 ...shuffleArrayWithCorrectAnswer(topSongs.map(song => song.playCount), topSongs[0].playCount),
                 chartData: dailyPlays
             },
@@ -179,6 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
         selectedAnswerIndex = null;
         const currentQuestion = questions[currentQuestionIndex];
         const contentDiv = document.getElementById('content');
+        const extraContentDiv = document.getElementById('extra-content');
 
         let html = `<h2>${currentQuestion.question}</h2><div class="answer-boxes">`;
 
@@ -192,6 +193,7 @@ document.addEventListener('DOMContentLoaded', function () {
         html += `<button class="button" id="nextButton" disabled>Weiter</button></div>`;
 
         contentDiv.innerHTML = html;
+        extraContentDiv.innerHTML = '';
 
         document.querySelectorAll('.answer-box').forEach(box => {
             box.addEventListener('click', function () {
@@ -218,6 +220,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function showAnswer() {
         const currentQuestion = questions[currentQuestionIndex];
         const contentDiv = document.getElementById('content');
+        const extraContentDiv = document.getElementById('extra-content');
 
         const isCorrect = currentQuestion.answers[selectedAnswerIndex] === currentQuestion.correct;
 
@@ -256,9 +259,13 @@ document.addEventListener('DOMContentLoaded', function () {
         html += `</div><div class="button-container" style="display: flex; justify-content: space-between; margin-top: 20px;">`;
         html += `<button class="button" id="nextButton">Weiter</button></div>`;
 
+        contentDiv.innerHTML = html;
+
+        html = '';
+
         // Falls es die Frage "Wie oft wurde der meistgespielte Song insgesamt abgespielt?" ist, füge den Titel und das Balkendiagramm hinzu
         if (currentQuestion.question.includes('Wie oft wurde der meistgespielte Song insgesamt abgespielt')) {
-            html += `<div body.white-bg id="chart-container" style="width: 100%; height: 400px;">
+            html += `<div body.white-bg id="chart-container">
                         <h3>So oft lief der meistgespielte Song in der <span class="highlighth3">letzten Woche</span> auf Radio Energy:</h3>
                         <canvas id="barChart"></canvas>
                      </div>`;
@@ -284,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function () {
             html += `</div> </div>`;
         }
 
-        contentDiv.innerHTML = html;
+        extraContentDiv.innerHTML = html;
 
         // Falls es die Frage "Wie oft wurde der meistgespielte Song insgesamt abgespielt" ist, erstelle das Diagramm
         if (currentQuestion.question.includes('Wie oft wurde der meistgespielte Song insgesamt abgespielt')) {
