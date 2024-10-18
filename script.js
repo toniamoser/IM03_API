@@ -96,6 +96,12 @@ document.addEventListener('DOMContentLoaded', function () {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
+        let wrongAnswersForPlayCount = [
+            getRandomNumber(20, 100),
+            getRandomNumber(20, 100),
+            getRandomNumber(20, 100)
+        ];
+
         let wrongAnswersForLoveCount = [
             getRandomNumber(10, 200),
             getRandomNumber(10, 200),
@@ -124,6 +130,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const mostPlayedSongTitle = topSongs[0].title;
 
+        // Finde alle Songs mit der höchsten Anzahl an Abspielungen
+        const maxPlayCount = topSongs[0].playCount;
+        const mostPlayedSongs = topSongs.filter(song => song.playCount === maxPlayCount).map(song => song.title);
+
         let dailyPlays = Array(7).fill(0);
         recentSongs.forEach(song => {
             if (song.title === mostPlayedSongTitle) {
@@ -135,10 +145,11 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
+        // Fragen definieren
         questions = [
             {
                 question: `Wie oft wurde der <span class="highlighth2">meistgespielte Song</span> insgesamt abgespielt?`,
-                ...shuffleArrayWithCorrectAnswer(topSongs.map(song => song.playCount), topSongs[0].playCount),
+                ...shuffleArrayWithCorrectAnswer([topSongs[0].playCount, ...wrongAnswersForPlayCount], topSongs[0].playCount),
                 chartData: dailyPlays
             },
             {
@@ -159,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             {
                 question: `Welcher dieser Songs wurde in dieser Woche <span class="highlighth2">am meisten gespielt?</span>`,
-                ...shuffleArrayWithCorrectAnswer(topSongs.map(song => song.title), topSongs[0].title)
+                ...shuffleArrayWithCorrectAnswer(topSongs.map(song => song.title), mostPlayedSongs) // Liste der korrekten Antworten mit mehreren richtigen
             }
         ];
 
@@ -222,7 +233,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const contentDiv = document.getElementById('content');
     const extraContentDiv = document.getElementById('extra-content');
 
-    const isCorrect = currentQuestion.answers[selectedAnswerIndex] === currentQuestion.correct;
+    // Überprüfung für die Frage nach dem meistgespielten Song: Es gibt mehrere richtige Antworten
+    let isCorrect;
+    if (Array.isArray(currentQuestion.correct)) {
+        isCorrect = currentQuestion.correct.includes(currentQuestion.answers[selectedAnswerIndex]);
+    } else {
+        isCorrect = currentQuestion.answers[selectedAnswerIndex] === currentQuestion.correct;
+    }
 
     if (isCorrect) {
         score++;  // Erhöhe den Punktestand, wenn die Antwort richtig ist
@@ -236,7 +253,11 @@ document.addEventListener('DOMContentLoaded', function () {
         let textColor = '';
         let symbol = '';
 
-        if (answer === currentQuestion.correct) {
+        if (Array.isArray(currentQuestion.correct) && currentQuestion.correct.includes(answer)) {
+            backgroundColor = 'white';
+            textColor = '#0055ff';
+            symbol = `<span style="color: #0055ff;">&#10003;</span>`;
+        } else if (answer === currentQuestion.correct) {
             backgroundColor = 'white';
             textColor = '#0055ff';
             symbol = `<span style="color: #0055ff;">&#10003;</span>`;
@@ -297,7 +318,7 @@ document.addEventListener('DOMContentLoaded', function () {
             currentQuestionIndex++;
             showQuestion();
         } else {
-            // Nach der letzten Frage die Statistik ausblenden
+            // Vor dem Anzeigen des Punktestands, extraContentDiv leeren
             extraContentDiv.innerHTML = '';
             showResult();
         }
@@ -305,7 +326,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     applySavedDimensionsToAnswerBoxes();
 }
-
 
     function showResult() {
         const contentDiv = document.getElementById('content');
@@ -325,7 +345,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <p>${resultMessage}</p>
             <button class="button" id="restartQuiz">Quiz wiederholen</button>
         `;
-    
+
         document.getElementById('restartQuiz').addEventListener('click', function () {
             currentQuestionIndex = 0;
             score = 0;  // Punktestand zurücksetzen
@@ -333,7 +353,6 @@ document.addEventListener('DOMContentLoaded', function () {
             showQuestion();
         });
     }
-    
 
     function createBarChart(data) {
         const ctx = document.getElementById('barChart').getContext('2d');
@@ -376,6 +395,26 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+    // Füge ein Click-Event zum Logo hinzu, um die Startseite anzuzeigen
+    document.querySelector('.logo-img').addEventListener('click', function() {
+        const contentDiv = document.getElementById('content');
+        const extraContentDiv = document.getElementById('extra-content');
+
+        // Setze den Inhalt auf die Startseite zurück
+        contentDiv.innerHTML = `
+            <h1>Bist du bereit, dein Wissen über die <span class="highlighth2">aktuellen Hits der Woche</span> zu testen?</h1>
+            <div>
+                <button type="button" class="button" id="startQuiz">Quiz starten</button>
+            </div>
+        `;
+
+        // Leere auch den zusätzlichen Inhalt
+        extraContentDiv.innerHTML = '';
+
+        // Füge den Eventlistener für den Start-Button wieder hinzu
+        document.getElementById('startQuiz').addEventListener('click', startQuiz);
+    });
 
     document.getElementById('startQuiz').addEventListener('click', startQuiz);
 });
