@@ -217,98 +217,95 @@ document.addEventListener('DOMContentLoaded', function () {
         saveAnswerBoxDimensions();
     }
 
-    function showAnswer() {
-        const currentQuestion = questions[currentQuestionIndex];
-        const contentDiv = document.getElementById('content');
-        const extraContentDiv = document.getElementById('extra-content');
+   function showAnswer() {
+    const currentQuestion = questions[currentQuestionIndex];
+    const contentDiv = document.getElementById('content');
+    const extraContentDiv = document.getElementById('extra-content');
 
-        const isCorrect = currentQuestion.answers[selectedAnswerIndex] === currentQuestion.correct;
+    const isCorrect = currentQuestion.answers[selectedAnswerIndex] === currentQuestion.correct;
 
-        if (isCorrect) {
-            score++;  // Erhöhe den Punktestand, wenn die Antwort richtig ist
+    if (isCorrect) {
+        score++;  // Erhöhe den Punktestand, wenn die Antwort richtig ist
+    }
+
+    let html = `<h2>${isCorrect ? 'Yey, <span class="highlighth2">richtig!</span>' : 'Das war leider <span class="highlighth2">falsch.</span>'}</h2>`;
+    html += `<h3 style="color: white;">${currentQuestion.question}</h3><div class="answer-boxes">`;
+
+    currentQuestion.answers.forEach((answer, index) => {
+        let backgroundColor = '';
+        let textColor = '';
+        let symbol = '';
+
+        if (answer === currentQuestion.correct) {
+            backgroundColor = 'white';
+            textColor = '#0055ff';
+            symbol = `<span style="color: #0055ff;">&#10003;</span>`;
         }
 
-        // Ergebnis (Richtig/Falsch) bleibt oben
-        let html = `<h2>${isCorrect ? 'Yey, <span class="highlighth2">richtig!</span>' : 'Das war leider <span class="highlighth2">falsch.</span>'}</h2>`;
+        if (index === selectedAnswerIndex && !isCorrect) {
+            backgroundColor = 'white';
+            textColor = '#ff0000';
+            symbol = `<span style="color: #ff0000;">&#10007;</span>`;
+        }
 
-        // Frage direkt unterhalb der Antwortanzeige anzeigen
-        html += `<h3 style="color: white;">${currentQuestion.question}</h3><div class="answer-boxes">`;
+        html += `<div class="answer-box" style="background-color: ${backgroundColor}; color: ${textColor};">
+                    <p>${answer} ${symbol}</p>
+                </div>`;
+    });
 
-        currentQuestion.answers.forEach((answer, index) => {
-            let backgroundColor = '';
-            let textColor = '';
-            let symbol = '';
+    html += `</div><div class="button-container" style="display: flex; justify-content: space-between; margin-top: 20px;">`;
+    html += `<button class="button" id="nextButton">Weiter</button></div>`;
 
-            if (answer === currentQuestion.correct) {
-                backgroundColor = 'white';
-                textColor = '#0055ff';
-                symbol = `<span style="color: #0055ff;">&#10003;</span>`;
-            }
+    contentDiv.innerHTML = html;
 
-            if (index === selectedAnswerIndex && !isCorrect) {
-                backgroundColor = 'white';
-                textColor = '#ff0000';
-                symbol = `<span style="color: #ff0000;">&#10007;</span>`;
-            }
-
-            html += `<div class="answer-box" style="background-color: ${backgroundColor}; color: ${textColor};">
-                        <p>${answer} ${symbol}</p>
-                    </div>`;
-        });
-
-        html += `</div><div class="button-container" style="display: flex; justify-content: space-between; margin-top: 20px;">`;
-        html += `<button class="button" id="nextButton">Weiter</button></div>`;
-
-        contentDiv.innerHTML = html;
-
-        html = '';
-
-        // Falls es die Frage "Wie oft wurde der meistgespielte Song insgesamt abgespielt?" ist, füge den Titel und das Balkendiagramm hinzu
-        if (currentQuestion.question.includes('Wie oft wurde der <span class="highlighth2">meistgespielte Song</span> insgesamt abgespielt?')) {
-            html += `<div id="chart-container">
+    // Statistik und Diagramm anzeigen
+    let extraHtml = '';
+    if (currentQuestion.question.includes('Wie oft wurde der <span class="highlighth2">meistgespielte Song</span> insgesamt abgespielt?')) {
+        extraHtml += `<div id="chart-container">
                         <h3>So oft lief der meistgespielte Song in der <span class="highlighth2">letzten Woche</span> auf Radio Energy:</h3>
                         <canvas id="barChart"></canvas>
                      </div>`;
-        }
+    }
 
-        // Füge die Song-Boxen hinzu, wenn es die Frage nach den meistgespielten Songs ist
-        if (currentQuestion.question.includes('Welcher dieser Songs wurde in dieser Woche <span class="highlighth2">am meisten gespielt?</span>')) {
-            html += `<div class='statistics'> <h3>Diese Songs wurden in der <span class="highlighth2">letzten Woche</span> am meisten gespielt:</h3> 
-            <div id="top-songs-container" class="top-songs">
-                        `;
+    if (currentQuestion.question.includes('Welcher dieser Songs wurde in dieser Woche <span class="highlighth2">am meisten gespielt?</span>')) {
+        extraHtml += `<div class='statistics'> <h3>Diese Songs wurden in der <span class="highlighth2">letzten Woche</span> am meisten gespielt:</h3> 
+        <div id="top-songs-container" class="top-songs">`;
 
-            window.topSongs.forEach(song => {
-                html += `
-                    <div class="song-box">
-                        <p class="bold">${song.title}</p>
-                        <p>${song.artist}</p>
-                        <img src="${song.imageUrl}" alt="Album Cover">
-                        <div class="play-count">${song.playCount}x</div>
-                    </div>
-                `;
-            });
-
-            html += `</div> </div>`;
-        }
-
-        extraContentDiv.innerHTML = html;
-
-        // Falls es die Frage "Wie oft wurde der meistgespielte Song insgesamt abgespielt" ist, erstelle das Diagramm
-        if (currentQuestion.question.includes('Wie oft wurde der <span class="highlighth2">meistgespielte Song</span> insgesamt abgespielt?')) {
-            createBarChart(currentQuestion.chartData);
-        }
-
-        document.getElementById('nextButton').addEventListener('click', function () {
-            if (currentQuestionIndex < questions.length - 1) {
-                currentQuestionIndex++;
-                showQuestion();
-            } else {
-                showResult();
-            }
+        window.topSongs.forEach(song => {
+            extraHtml += `
+                <div class="song-box">
+                    <p class="bold">${song.title}</p>
+                    <p>${song.artist}</p>
+                    <img src="${song.imageUrl}" alt="Album Cover">
+                    <div class="play-count">${song.playCount}x</div>
+                </div>
+            `;
         });
 
-        applySavedDimensionsToAnswerBoxes();
+        extraHtml += `</div> </div>`;
     }
+
+    extraContentDiv.innerHTML = extraHtml;
+
+    // Diagramm erstellen, wenn relevant
+    if (currentQuestion.question.includes('Wie oft wurde der <span class="highlighth2">meistgespielte Song</span> insgesamt abgespielt?')) {
+        createBarChart(currentQuestion.chartData);
+    }
+
+    document.getElementById('nextButton').addEventListener('click', function () {
+        if (currentQuestionIndex < questions.length - 1) {
+            currentQuestionIndex++;
+            showQuestion();
+        } else {
+            // Nach der letzten Frage die Statistik ausblenden
+            extraContentDiv.innerHTML = '';
+            showResult();
+        }
+    });
+
+    applySavedDimensionsToAnswerBoxes();
+}
+
 
     function showResult() {
         const contentDiv = document.getElementById('content');
