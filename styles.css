@@ -345,3 +345,14 @@ p {
     cursor: pointer; /* Ändert den Cursor zu einer Hand */
 }
 
+/* Deaktiviert Hover-Effekte auf den Auflösungsseiten */
+.answer-box.no-hover {
+    pointer-events: none; /* Verhindert, dass die Box angeklickt werden kann */
+    background-color: initial !important; /* Setzt die Hintergrundfarbe zurück */
+    color: initial !important; /* Setzt die Textfarbe zurück */
+}
+
+.answer-box.no-hover:hover {
+    background-color: initial; /* Entfernt den Hover-Effekt */
+    color: initial;
+}
